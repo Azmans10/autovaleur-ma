@@ -32,7 +32,7 @@ Plans:
 - [x] 01-02: Implementar hash router en JS (navigate, hashchange listener, mostrar/ocultar páginas)
 - [x] 01-03: Crear sw.js (cache-first, versioned) y manifest.json (nombre, iconos, display standalone)
 - [x] 01-04: Registrar SW desde index.html y añadir meta tags PWA (theme-color, apple-mobile-web-app-capable, viewport)
-- [ ] 01-05: CSS base (custom properties, reset, layout mobile-first, nav inferior fija, transiciones suaves)
+- [x] 01-05: CSS base (custom properties, reset, layout mobile-first, nav inferior fija, transiciones suaves)
 
 ### Phase 2: Internacionalización FR/AR
 **Goal**: La app habla francés y árabe con layout RTL correcto.
