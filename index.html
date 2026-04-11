@@ -223,8 +223,7 @@
       position: fixed;
       bottom: 0;
       /* Extender de borde a borde en toda la pantalla */
-      left: 0;
-      right: 0;
+      inset-inline: 0;
       /* Altura de la nav + safe area para iPhone notch/Dynamic Island */
       height: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px));
       padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -314,8 +313,7 @@
       position: fixed;
       /* Aparece encima de la bottom-nav */
       bottom: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px));
-      left: 0;
-      right: 0;
+      inset-inline: 0;
       background: var(--primary);
       color: white;
       padding: var(--sp-sm) var(--sp-md);
