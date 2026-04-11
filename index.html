@@ -80,9 +80,89 @@
   </nav>
 
   <script>
-    // JS ROUTER + PWA — será completado en los planes 01-02 y 01-04
-    // Placeholder mínimo: los botones de nav no hacen nada aún
-    console.log('AutoValeur MA — index.html cargado correctamente');
+    'use strict';
+
+    // ═══════════════════════════════════════════════════════════
+    // ROUTER — Hash-based SPA navigation
+    // Cada página es una <section class="page" id="page-X">.
+    // La navegación usa location.hash; el botón Atrás funciona
+    // de forma nativa porque cada hash push añade entrada al
+    // historial del browser.
+    // ═══════════════════════════════════════════════════════════
+
+    const ROUTES = {
+      '':           'estimer',
+      'estimer':    'estimer',
+      'historique': 'historique',
+      'comparer':   'comparer'
+    };
+
+    const Router = {
+      /**
+       * Navegar a una página por nombre.
+       * Usa location.hash = (no location.replace) para que el
+       * botón Atrás funcione correctamente.
+       * @param {string} page - 'estimer' | 'historique' | 'comparer'
+       */
+      navigate(page) {
+        location.hash = page;
+      },
+
+      /**
+       * Leer el hash actual y mostrar la página correspondiente.
+       * Llamado en 'hashchange' y en 'DOMContentLoaded'.
+       */
+      _show() {
+        const hash = location.hash.replace('#', '') || 'estimer';
+        const pageId = ROUTES[hash] || 'estimer';
+
+        // Ocultar todas las páginas
+        document.querySelectorAll('.page').forEach(function(p) {
+          p.hidden = true;
+        });
+
+        // Mostrar la página activa
+        const target = document.getElementById('page-' + pageId);
+        if (target) {
+          target.hidden = false;
+        }
+
+        // Actualizar estado activo en la nav inferior
+        document.querySelectorAll('.nav-item').forEach(function(btn) {
+          btn.classList.toggle('active', btn.dataset.page === pageId);
+        });
+      },
+
+      /**
+       * Inicializar el router: conectar botones de nav y
+       * mostrar la página correcta según el hash inicial.
+       */
+      init() {
+        // Escuchar cambios de hash (botón Atrás incluido)
+        window.addEventListener('hashchange', function() {
+          Router._show();
+        });
+
+        // Conectar botones de la nav inferior
+        document.querySelectorAll('.nav-item').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            Router.navigate(btn.dataset.page);
+          });
+        });
+
+        // Mostrar la página inicial según el hash (o Estimer por defecto)
+        Router._show();
+      }
+    };
+
+    // ═══════════════════════════════════════════════════════════
+    // INIT — Arrancar cuando el DOM esté listo
+    // ═══════════════════════════════════════════════════════════
+    document.addEventListener('DOMContentLoaded', function() {
+      Router.init();
+      console.log('AutoValeur MA — Router inicializado');
+    });
+
   </script>
 
 </body>
