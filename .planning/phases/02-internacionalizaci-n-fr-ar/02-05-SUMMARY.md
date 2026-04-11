@@ -20,7 +20,7 @@ decisions:
 metrics:
   duration: 63s
   completed: "2026-04-11"
-  tasks_completed: 1
+  tasks_completed: 2
   tasks_total: 2
   files_touched: 1
 requirements:
@@ -37,7 +37,7 @@ RTL Arabic system font stack via [dir="rtl"] CSS selector and formatPrice() func
 | Task | Name | Commit | Files |
 |------|------|--------|-------|
 | 1 | Add CSS font stack arabe for dir="rtl" and formatPrice function | 6f9a127 | index.html |
-| 2 | Visual verification checkpoint (human-verify) | -- | pending |
+| 2 | Visual verification checkpoint (human-verify) | approved | index.html (visual) |
 
 ## What Was Done
 
@@ -60,7 +60,7 @@ Made 2 changes to index.html:
 
 ### Task 2: Visual verification checkpoint
 
-Awaiting human verification of the complete i18n system (all 5 plans): STRINGS, I18n module, pill toggle, logical properties, font stack, and formatPrice.
+User approved ("aprobado") the complete i18n system visual verification. All 5 plans confirmed working: STRINGS dictionary, I18n module, FR/AR pill toggle, logical properties for RTL, Arabic font stack, and formatPrice with latin digits. FR mode displays LTR layout with French labels, AR mode mirrors to RTL with Arabic labels, language persistence works across reload, and formatPrice outputs latin digits in both locales.
 
 ## Deviations from Plan
 
@@ -94,3 +94,5 @@ None -- no new trust boundaries introduced beyond those documented in the plan's
 - [x] index.html exists with RTL font stack and formatPrice
 - [x] Commit 6f9a127 exists
 - [x] 02-05-SUMMARY.md created
+- [x] Task 2 checkpoint approved by user ("aprobado")
+- [x] All 2/2 tasks complete
