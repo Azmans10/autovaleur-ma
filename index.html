@@ -487,6 +487,42 @@
   <script>
     'use strict';
 
+    // ===============================================================
+    // STRINGS — Cadenas i18n (fr / ar)
+    // Cubre SOLO los textos de Fase 1. Fases futuras anaden sus claves.
+    // ===============================================================
+
+    var STRINGS = {
+      fr: {
+        'nav.estimer':           'Estimer',
+        'nav.historique':        'Historique',
+        'nav.comparer':          'Comparer',
+        'nav.aria.main':         'Navigation principale',
+        'nav.aria.estimer':      'Estimer',
+        'nav.aria.historique':   'Historique',
+        'nav.aria.comparer':     'Comparer',
+        'page.estimer.title':    'Estimer',
+        'page.historique.title': 'Historique',
+        'page.comparer.title':   'Comparer',
+        'ios.banner.text':       'Pour installer : appuyez sur {icon} puis <strong>Sur l\'écran d\'accueil</strong>',
+        'ios.banner.close':      'Fermer'
+      },
+      ar: {
+        'nav.estimer':           '\u062a\u0642\u064a\u064a\u0645',
+        'nav.historique':        '\u0627\u0644\u0633\u062c\u0644',
+        'nav.comparer':          '\u0645\u0642\u0627\u0631\u0646\u0629',
+        'nav.aria.main':         '\u0627\u0644\u062a\u0646\u0642\u0644 \u0627\u0644\u0631\u0626\u064a\u0633\u064a',
+        'nav.aria.estimer':      '\u062a\u0642\u064a\u064a\u0645',
+        'nav.aria.historique':   '\u0627\u0644\u0633\u062c\u0644',
+        'nav.aria.comparer':     '\u0645\u0642\u0627\u0631\u0646\u0629',
+        'page.estimer.title':    '\u062a\u0642\u064a\u064a\u0645',
+        'page.historique.title': '\u0627\u0644\u0633\u062c\u0644',
+        'page.comparer.title':   '\u0645\u0642\u0627\u0631\u0646\u0629',
+        'ios.banner.text':       '\u0644\u0644\u062a\u062b\u0628\u064a\u062a: \u0627\u0636\u063a\u0637 \u0639\u0644\u0649 {icon} \u062b\u0645 <strong>\u0625\u0636\u0627\u0641\u0629 \u0625\u0644\u0649 \u0627\u0644\u0634\u0627\u0634\u0629 \u0627\u0644\u0631\u0626\u064a\u0633\u064a\u0629</strong>',
+        'ios.banner.close':      '\u0625\u063a\u0644\u0627\u0642'
+      }
+    };
+
     // ═══════════════════════════════════════════════════════════
     // ROUTER — Hash-based SPA navigation
     // Cada página es una <section class="page" id="page-X">.
