@@ -129,6 +129,9 @@
       max-width: 480px;
       margin: 0 auto;
       width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     /* Wrapper para centrar el header en pantallas anchas */
@@ -146,6 +149,34 @@
       font-weight: 700;
       color: var(--primary);
       letter-spacing: -0.02em;
+    }
+
+    /* ── PILL TOGGLE FR/AR ──────────────────────────────── */
+    .lang-toggle {
+      display: flex;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--surface-3);
+      cursor: pointer;
+      padding: 0;
+      /* Quitar estilos de boton por defecto */
+      font-family: inherit;
+      line-height: 1;
+    }
+
+    .lang-option {
+      padding: var(--sp-xs) var(--sp-sm);
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: background var(--transition-fast), color var(--transition-fast);
+      user-select: none;
+    }
+
+    .lang-option.active {
+      background: var(--primary);
+      color: white;
     }
 
     /* ── LAYOUT PRINCIPAL ──────────────────────────────────── */
@@ -419,6 +450,10 @@
 
   <header class="app-header">
     <h1 class="app-title">AutoValeur MA</h1>
+    <button class="lang-toggle" onclick="I18n.setLang(I18n.currentLang === 'fr' ? 'ar' : 'fr')" aria-label="Changer la langue / تغيير اللغة">
+      <span class="lang-option active" data-lang="fr">FR</span>
+      <span class="lang-option" data-lang="ar">AR</span>
+    </button>
   </header>
 
   <main>
