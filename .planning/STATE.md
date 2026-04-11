@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: in-progress
-stopped_at: Completed 01-estructura-base-spa-y-pwa plan 01-03
-last_updated: "2026-04-11T08:51:56.792Z"
+stopped_at: Completed 01-estructura-base-spa-y-pwa plan 01-04
+last_updated: "2026-04-11T08:54:36.833Z"
 progress:
   total_phases: 6
   completed_phases: 0
   total_plans: 5
-  completed_plans: 3
-  percent: 60
+  completed_plans: 4
+  percent: 80
 ---
 
 # Project State — AutoValeur MA
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 **Phase:** 01 — Estructura base, SPA y PWA (Plan 02 of 05 complete)
 **Last action:** Plan 01-02 complete — hash router SPA implementado en index.html
 **Next step:** Execute plan 01-03
-**Stopped at:** Completed 01-estructura-base-spa-y-pwa plan 01-03
+**Stopped at:** Completed 01-estructura-base-spa-y-pwa plan 01-04
 
 ## Phases
 
@@ -47,6 +47,9 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 - Plan 01-01: CSS y JS en index.html como placeholders explícitos hasta planes 01-05 y 01-02 respectivamente
 - [Phase 01-estructura-base-spa-y-pwa]: Iconos PNG generados con Node.js built-in (zlib) sin dependencias externas para evitar dependencia de browser/canvas
 - [Phase 01-estructura-base-spa-y-pwa]: sw.js excluido de PRECACHE_URLS — browser gestiona actualizaciones del SW directamente
+- [Phase 01]: Banner iOS con delay 2s para no competir con carga visual inicial (ajustable en Fase 6)
+- [Phase 01]: SW registrado en window load event para no competir con carga inicial de la página
+- [Phase 01]: deferredInstallPrompt capturado sin UI en Fase 1 — botón Android para fases futuras
 
 ## Performance Metrics
 
@@ -59,3 +62,4 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 *State initialized: 2026-04-11*
 *Last session: 2026-04-11T08:47:00Z*
 | Phase 01-estructura-base-spa-y-pwa P01-03 | 12 | 3 tasks | 5 files |
+| Phase 01 P04 | 8min | 2 tasks | 1 files |
