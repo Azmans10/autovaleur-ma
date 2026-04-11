@@ -4,9 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="Estimez la valeur de votre voiture d'occasion au Maroc — transparent, offline, gratuit.">
+
+  <!-- PWA: color de la barra del navegador en Android Chrome -->
+  <meta name="theme-color" content="#1a73e8">
+
+  <!-- PWA iOS: activar modo standalone en Safari -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <!-- default | black | black-translucent (usar 'default' para que los iconos del sistema sean visibles) -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="AutoValeur">
+
   <title>AutoValeur MA</title>
+
+  <!-- Web App Manifest (instalabilidad Android Chrome + Firefox) -->
   <link rel="manifest" href="manifest.json">
+
+  <!-- Icono para iOS "Add to Home Screen" (el manifest no aplica en iOS Safari) -->
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <!-- Favicon -->
+  <link rel="icon" href="icon-192.png" type="image/png">
+
   <style>
     /* CSS BASE — será completado en el plan 01-05 */
     /* Placeholder mínimo para que la página sea usable durante el desarrollo */
@@ -22,6 +40,23 @@
       align-items: center; justify-content: center;
       background: none; border: none; font-size: 0.75rem;
       cursor: pointer; color: #5f6368;
+    }
+    /* Banner de instalación iOS */
+    .ios-install-banner {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: #1a73e8; color: white;
+      padding: 0.75rem 1rem;
+      padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+      z-index: 200; display: none;
+      font-size: 0.875rem; text-align: center;
+      align-items: center; justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .ios-install-banner.visible { display: flex; }
+    .ios-install-banner button {
+      background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4);
+      color: white; padding: 0.25rem 0.75rem; border-radius: 4px;
+      cursor: pointer; font-size: 0.8rem; flex-shrink: 0;
     }
   </style>
 </head>
