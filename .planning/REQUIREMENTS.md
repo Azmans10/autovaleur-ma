@@ -7,9 +7,9 @@
 
 ### Estructura & PWA
 
-- [ ] **PWA-01**: La app existe como archivo(s) estáticos desplegables en GitHub Pages / cualquier CDN sin configuración de servidor
-- [ ] **PWA-02**: La app funciona completamente offline tras la primera carga (Service Worker con cache-first)
-- [ ] **PWA-03**: La app es instalable en la pantalla de inicio de Android (Web App Manifest completo)
+- [x] **PWA-01**: La app existe como archivo(s) estáticos desplegables en GitHub Pages / cualquier CDN sin configuración de servidor
+- [x] **PWA-02**: La app funciona completamente offline tras la primera carga (Service Worker con cache-first)
+- [x] **PWA-03**: La app es instalable en la pantalla de inicio de Android (Web App Manifest completo)
 - [ ] **PWA-04**: La app muestra instrucciones de instalación manual para iOS Safari
 - [ ] **PWA-05**: La interfaz es responsive y funciona correctamente en móviles Android (pantallas 360px+)
 
