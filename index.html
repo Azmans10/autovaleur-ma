@@ -26,38 +26,393 @@
   <link rel="icon" href="icon-192.png" type="image/png">
 
   <style>
-    /* CSS BASE — será completado en el plan 01-05 */
-    /* Placeholder mínimo para que la página sea usable durante el desarrollo */
-    body { font-family: system-ui, sans-serif; margin: 0; background: #f8f9fa; }
-    .page { padding: 1rem; padding-bottom: 5rem; }
+    /* ═══════════════════════════════════════════════════════════
+     * AutoValeur MA — CSS Base
+     * Sistema de diseño: custom properties → reset → layout → components
+     * Mobile-first: base en 360px, max-width 480px centrado
+     * ═══════════════════════════════════════════════════════════ */
+
+    /* ── CUSTOM PROPERTIES ─────────────────────────────────── */
+    :root {
+      /* Paleta */
+      --primary:      #1a73e8;
+      --primary-dark: #1558b0;
+      --surface:      #ffffff;
+      --surface-2:    #f8f9fa;
+      --surface-3:    #f1f3f4;
+      --text:         #202124;
+      --text-muted:   #5f6368;
+      --accent:       #34a853;
+      --danger:       #ea4335;
+      --warning:      #fbbc04;
+      --border:       #e0e0e0;
+
+      /* Espaciado (escala de 4px base) */
+      --sp-xs:  0.25rem;   /* 4px  */
+      --sp-sm:  0.5rem;    /* 8px  */
+      --sp-md:  1rem;      /* 16px */
+      --sp-lg:  1.5rem;    /* 24px */
+      --sp-xl:  2rem;      /* 32px */
+      --sp-2xl: 3rem;      /* 48px */
+
+      /* Radios */
+      --radius:    12px;
+      --radius-sm: 6px;
+      --radius-lg: 20px;
+
+      /* Sombras */
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.06);
+
+      /* Tipografía */
+      --font-base: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --font-size-sm:   0.875rem; /* 14px */
+      --font-size-base: 1rem;     /* 16px */
+      --font-size-lg:   1.125rem; /* 18px */
+      --font-size-xl:   1.25rem;  /* 20px */
+      --font-size-2xl:  1.5rem;   /* 24px */
+
+      /* Navegación inferior */
+      --nav-height: 56px;
+
+      /* Transiciones */
+      --transition-fast:   0.15s ease-out;
+      --transition-normal: 0.25s ease-out;
+    }
+
+    /* ── RESET MINIMALISTA ─────────────────────────────────── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      /* dvh: dynamic viewport height — se ajusta cuando aparece/desaparece la barra del browser en móvil */
+      /* Fallback con vh para browsers sin soporte dvh (Chrome <108) */
+      min-height: 100vh;
+      min-height: 100dvh;
+      /* Prevenir el rebote de scroll en iOS */
+      overscroll-behavior: none;
+      /* scroll-padding para que los inputs no queden tapados por el teclado virtual en Android */
+      scroll-padding-bottom: 200px;
+    }
+
+    body {
+      font-family: var(--font-base);
+      font-size: var(--font-size-base);
+      background: var(--surface-2);
+      color: var(--text);
+      min-height: 100vh;
+      min-height: 100dvh;
+      /* Evitar scroll horizontal en móviles */
+      overflow-x: hidden;
+      /* Suavizar el rendering de fuentes */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Mejora de tap en móvil: eliminar highlight azul en links/botones */
+    a, button {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ── APP HEADER ────────────────────────────────────────── */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: var(--sp-md) var(--sp-md);
+      /* Limitar ancho y centrar igual que el main */
+      max-width: 480px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Wrapper para centrar el header en pantallas anchas */
+    /* El sticky necesita un wrapper que ocupe todo el ancho */
+    .app-header-wrapper {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .app-title {
+      font-size: var(--font-size-lg);
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: -0.02em;
+    }
+
+    /* ── LAYOUT PRINCIPAL ──────────────────────────────────── */
+    /* Centrar el contenido en pantallas anchas */
+    main {
+      max-width: 480px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* ── PÁGINAS (SPA) ─────────────────────────────────────── */
+    .page {
+      /* Padding horizontal base */
+      padding: var(--sp-md);
+      /* Espacio debajo del contenido para que no quede tapado por la nav */
+      /* nav-height + safe-area + margen extra para comodidad */
+      padding-bottom: calc(var(--nav-height) + var(--sp-xl) + env(safe-area-inset-bottom, 0px));
+      /* Altura mínima para que páginas con poco contenido no se vean vacías */
+      min-height: calc(100dvh - var(--nav-height));
+    }
+
+    /* Transición suave de aparición de páginas */
+    /* Solo se aplica cuando la página pasa de hidden a visible */
+    .page:not([hidden]) {
+      animation: page-fadein var(--transition-fast);
+    }
+
+    @keyframes page-fadein {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0);   }
+    }
+
+    /* Títulos de página */
+    .page h2 {
+      font-size: var(--font-size-2xl);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: var(--sp-lg);
+      letter-spacing: -0.02em;
+    }
+
+    /* ── NAVEGACIÓN INFERIOR ───────────────────────────────── */
     .bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      background: #fff; border-top: 1px solid #e0e0e0;
-      display: flex; height: 56px;
+      position: fixed;
+      bottom: 0;
+      /* Extender de borde a borde en toda la pantalla */
+      left: 0;
+      right: 0;
+      /* Altura de la nav + safe area para iPhone notch/Dynamic Island */
+      height: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px));
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: stretch;
+      z-index: 100;
+      /* Sombra sutil hacia arriba */
+      box-shadow: 0 -1px 8px rgba(0,0,0,0.06);
     }
+
+    /* Contenedor interior centrado (max 480px) */
+    .bottom-nav-inner {
+      display: flex;
+      align-items: stretch;
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* Botones de navegación */
     .nav-item {
-      flex: 1; display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      background: none; border: none; font-size: 0.75rem;
-      cursor: pointer; color: #5f6368;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--sp-xs);
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.6875rem; /* 11px */
+      font-weight: 500;
+      cursor: pointer;
+      padding: var(--sp-xs) 0;
+      transition: color var(--transition-fast);
+      /* Área de toque mínima recomendada por Material Design: 48px */
+      min-height: 48px;
+      /* Eliminar outline por defecto y añadir uno accesible */
+      outline: none;
+      position: relative;
     }
-    /* Banner de instalación iOS */
+
+    .nav-item:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: -2px;
+      border-radius: var(--radius-sm);
+    }
+
+    /* Indicador visual del ítem activo */
+    .nav-item.active {
+      color: var(--primary);
+    }
+
+    /* Punto/línea indicador encima del ícono activo */
+    .nav-item.active::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 24px;
+      height: 3px;
+      background: var(--primary);
+      border-radius: 0 0 3px 3px;
+    }
+
+    /* Iconos SVG dentro de los botones de nav */
+    .nav-item svg {
+      width: 22px;
+      height: 22px;
+      transition: transform var(--transition-fast);
+    }
+
+    .nav-item.active svg {
+      transform: translateY(-1px);
+    }
+
+    /* Texto del botón de nav */
+    .nav-item span {
+      line-height: 1;
+    }
+
+    /* ── BANNER DE INSTALACIÓN iOS ─────────────────────────── */
     .ios-install-banner {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      background: #1a73e8; color: white;
-      padding: 0.75rem 1rem;
-      padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
-      z-index: 200; display: none;
-      font-size: 0.875rem; text-align: center;
-      align-items: center; justify-content: space-between;
-      gap: 0.5rem;
+      position: fixed;
+      /* Aparece encima de la bottom-nav */
+      bottom: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px));
+      left: 0;
+      right: 0;
+      background: var(--primary);
+      color: white;
+      padding: var(--sp-sm) var(--sp-md);
+      z-index: 150;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-sm);
+      font-size: var(--font-size-sm);
+      box-shadow: var(--shadow-md);
+      border-radius: var(--radius) var(--radius) 0 0;
     }
-    .ios-install-banner.visible { display: flex; }
+
+    .ios-install-banner.visible {
+      display: flex;
+    }
+
+    .ios-install-banner span {
+      flex: 1;
+      line-height: 1.4;
+    }
+
+    .ios-install-banner svg {
+      vertical-align: middle;
+      display: inline-block;
+    }
+
     .ios-install-banner button {
-      background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4);
-      color: white; padding: 0.25rem 0.75rem; border-radius: 4px;
-      cursor: pointer; font-size: 0.8rem; flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      color: white;
+      padding: var(--sp-xs) var(--sp-sm);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+      transition: background var(--transition-fast);
     }
+
+    .ios-install-banner button:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* ── UTILIDADES ────────────────────────────────────────── */
+
+    /* Corrección de scroll en Android: inputs no tapados por el teclado */
+    input:focus,
+    select:focus,
+    textarea:focus {
+      scroll-margin-bottom: 100px;
+    }
+
+    /* Estado vacío genérico (para Historique vacío en Fase 5) */
+    .empty-state {
+      text-align: center;
+      padding: var(--sp-2xl) var(--sp-md);
+      color: var(--text-muted);
+    }
+
+    .empty-state svg {
+      width: 48px;
+      height: 48px;
+      margin-bottom: var(--sp-md);
+      opacity: 0.4;
+    }
+
+    .empty-state p {
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--sp-md);
+    }
+
+    /* Card base (usada desde Fase 4) */
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: var(--sp-md);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+    }
+
+    /* Botón primario base */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--sp-sm);
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 0.75rem var(--sp-lg);
+      font-size: var(--font-size-base);
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: background var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    /* Botón secundario base */
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--sp-sm);
+      background: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem var(--sp-lg);
+      font-size: var(--font-size-base);
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: background var(--transition-fast);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(26, 115, 232, 0.06);
+    }
+
   </style>
 </head>
 <body>
@@ -90,28 +445,30 @@
 
   <!-- NAVEGACIÓN INFERIOR -->
   <nav class="bottom-nav" role="navigation" aria-label="Navigation principale">
+    <div class="bottom-nav-inner">
 
-    <button class="nav-item active" data-page="estimer" aria-label="Estimer">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>
-      </svg>
-      <span>Estimer</span>
-    </button>
+      <button class="nav-item active" data-page="estimer" aria-label="Estimer">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>
+        </svg>
+        <span>Estimer</span>
+      </button>
 
-    <button class="nav-item" data-page="historique" aria-label="Historique">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-      </svg>
-      <span>Historique</span>
-    </button>
+      <button class="nav-item" data-page="historique" aria-label="Historique">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <span>Historique</span>
+      </button>
 
-    <button class="nav-item" data-page="comparer" aria-label="Comparer">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
-      </svg>
-      <span>Comparer</span>
-    </button>
+      <button class="nav-item" data-page="comparer" aria-label="Comparer">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+        </svg>
+        <span>Comparer</span>
+      </button>
 
+    </div>
   </nav>
 
   <!-- BANNER DE INSTALACIÓN iOS -->
