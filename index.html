@@ -114,6 +114,19 @@
 
   </nav>
 
+  <!-- BANNER DE INSTALACIÓN iOS -->
+  <!-- Solo visible en iOS Safari cuando la app NO está instalada -->
+  <div id="ios-install-banner" class="ios-install-banner" role="alert" aria-live="polite">
+    <span>
+      Pour installer : appuyez sur
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle" aria-hidden="true">
+        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/>
+      </svg>
+      puis <strong>Sur l'écran d'accueil</strong>
+    </span>
+    <button onclick="document.getElementById('ios-install-banner').classList.remove('visible')" aria-label="Fermer">✕</button>
+  </div>
+
   <script>
     'use strict';
 
@@ -197,6 +210,63 @@
       Router.init();
       console.log('AutoValeur MA — Router inicializado');
     });
+
+    // ═══════════════════════════════════════════════════════════
+    // SERVICE WORKER — Registro
+    // Se registra en 'load' (no 'DOMContentLoaded') para no
+    // competir con la carga inicial de la página.
+    // ═══════════════════════════════════════════════════════════
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('./sw.js')
+          .then(function(registration) {
+            console.log('AutoValeur — SW registrado, scope:', registration.scope);
+          })
+          .catch(function(error) {
+            // El SW falla silenciosamente en file:// — normal en desarrollo sin servidor
+            console.warn('AutoValeur — SW no se pudo registrar:', error.message);
+          });
+      });
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // PWA INSTALL — Lógica bifurcada iOS / Android
+    // ═══════════════════════════════════════════════════════════
+
+    // Android Chrome: capturar el evento beforeinstallprompt
+    // para mostrarlo cuando el usuario quiera instalar
+    var deferredInstallPrompt = null;
+
+    window.addEventListener('beforeinstallprompt', function(event) {
+      // Prevenir que Chrome muestre el mini-infobar automático
+      event.preventDefault();
+      deferredInstallPrompt = event;
+      console.log('AutoValeur — Install prompt capturado (Android)');
+      // En fases futuras: mostrar un botón "Installer l'app" en la UI
+    });
+
+    window.addEventListener('appinstalled', function() {
+      console.log('AutoValeur — App instalada correctamente');
+      deferredInstallPrompt = null;
+    });
+
+    // iOS Safari: no hay beforeinstallprompt — mostrar banner con instrucciones manuales
+    (function checkIOSInstall() {
+      var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+      // window.navigator.standalone = true cuando ya está instalada como PWA en iOS
+      var isInStandaloneMode = window.navigator.standalone === true
+        || window.matchMedia('(display-mode: standalone)').matches;
+
+      if (isIOS && !isInStandaloneMode) {
+        var banner = document.getElementById('ios-install-banner');
+        if (banner) {
+          // Mostrar con pequeño delay para no bloquear la carga visual
+          setTimeout(function() {
+            banner.classList.add('visible');
+          }, 2000);
+        }
+      }
+    })();
 
   </script>
 
