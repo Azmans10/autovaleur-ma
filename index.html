@@ -485,6 +485,15 @@
   </div>
 
   <script>
+    // Early dir/lang — prevenir flash de layout LTR→RTL
+    (function() {
+      var lang = localStorage.getItem('lang');
+      if (lang === 'ar') {
+        document.documentElement.lang = 'ar';
+        document.documentElement.dir = 'rtl';
+      }
+    })();
+
     'use strict';
 
     // ===============================================================
@@ -520,6 +529,76 @@
         'page.comparer.title':   '\u0645\u0642\u0627\u0631\u0646\u0629',
         'ios.banner.text':       '\u0644\u0644\u062a\u062b\u0628\u064a\u062a: \u0627\u0636\u063a\u0637 \u0639\u0644\u0649 {icon} \u062b\u0645 <strong>\u0625\u0636\u0627\u0641\u0629 \u0625\u0644\u0649 \u0627\u0644\u0634\u0627\u0634\u0629 \u0627\u0644\u0631\u0626\u064a\u0633\u064a\u0629</strong>',
         'ios.banner.close':      '\u0625\u063a\u0644\u0627\u0642'
+      }
+    };
+
+    // ===============================================================
+    // I18N — Motor de traduccion FR / AR
+    // Lee STRINGS, aplica textContent/innerHTML/aria-label segun
+    // atributos data-i18n, data-i18n-html, data-i18n-aria.
+    // ===============================================================
+
+    var I18n = {
+      currentLang: 'fr',
+
+      /**
+       * Obtener la traduccion de una clave.
+       * Devuelve la clave misma si no se encuentra (fail visible).
+       */
+      t: function(key) {
+        var strings = STRINGS[I18n.currentLang];
+        return (strings && strings[key]) || key;
+      },
+
+      /**
+       * Cambiar el idioma activo.
+       * Actualiza dir, lang, localStorage, y reaplica traducciones.
+       */
+      setLang: function(lang) {
+        if (!STRINGS[lang]) return;
+        I18n.currentLang = lang;
+        document.documentElement.lang = lang;
+        document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+        localStorage.setItem('lang', lang);
+        I18n._applyTranslations();
+        // Actualizar pill toggle si existe (Plan 03)
+        document.querySelectorAll('.lang-option').forEach(function(opt) {
+          opt.classList.toggle('active', opt.getAttribute('data-lang') === lang);
+        });
+      },
+
+      /**
+       * Recorrer el DOM y aplicar traducciones segun atributos data-i18n.
+       */
+      _applyTranslations: function() {
+        // Texto interior (textContent o innerHTML)
+        document.querySelectorAll('[data-i18n]').forEach(function(el) {
+          var key = el.getAttribute('data-i18n');
+          var val = I18n.t(key);
+          if (el.hasAttribute('data-i18n-html')) {
+            // Banner iOS: reemplazar {icon} con el SVG inline
+            var svgIcon = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>';
+            el.innerHTML = val.replace('{icon}', svgIcon);
+          } else {
+            el.textContent = val;
+          }
+        });
+        // aria-label
+        document.querySelectorAll('[data-i18n-aria]').forEach(function(el) {
+          var key = el.getAttribute('data-i18n-aria');
+          el.setAttribute('aria-label', I18n.t(key));
+        });
+      },
+
+      /**
+       * Inicializar: leer preferencia de localStorage, aplicar idioma.
+       * Llamar ANTES de Router.init() en DOMContentLoaded.
+       */
+      init: function() {
+        var saved = localStorage.getItem('lang');
+        // Solo aceptar 'fr' o 'ar'; cualquier otro valor → default 'fr'
+        var lang = (saved === 'ar') ? 'ar' : 'fr';
+        I18n.setLang(lang);
       }
     };
 
@@ -600,8 +679,9 @@
     // INIT — Arrancar cuando el DOM esté listo
     // ═══════════════════════════════════════════════════════════
     document.addEventListener('DOMContentLoaded', function() {
+      I18n.init();
       Router.init();
-      console.log('AutoValeur MA — Router inicializado');
+      console.log('AutoValeur MA — i18n + Router inicializados');
     });
 
     // ═══════════════════════════════════════════════════════════
