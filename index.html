@@ -734,6 +734,75 @@
       }
     };
 
+    // ===============================================================
+    // DEPRECIATION — Tablas de factores de depreciacion mercado MA
+    // Curva de edad (15 pts), km, estado, carburant, transmision, ciudad
+    // ===============================================================
+
+    var DEPRECIATION = {
+      // Curva de edad: 15 puntos (D-05, ALG-02)
+      // Agresiva anos 1-5, suave 6-10, estabilizacion 11+, floor 30%
+      age_factors: {
+        0: 1.00, 1: 0.85, 2: 0.75, 3: 0.66, 4: 0.58,
+        5: 0.52, 6: 0.47, 7: 0.43, 8: 0.40, 9: 0.37,
+        10: 0.35, 11: 0.33, 12: 0.32, 13: 0.31, 14: 0.30, 15: 0.30
+      },
+
+      // Estado del vehiculo (D-10)
+      // Rango +10% (excellent) a -35% (accidente)
+      condition_factors: {
+        'excellent': 1.10,
+        'bon':       1.00,
+        'moyen':     0.85,
+        'mauvais':   0.70,
+        'accidente': 0.65
+      },
+
+      // Carburant (D-08, ALG-04)
+      // Diesel prima +6% por subvencion historica del gasoil en MA
+      fuel_factors: {
+        'diesel':     1.06,
+        'essence':    1.00,
+        'hybride':    1.05,
+        'electrique': 1.08,
+        'gpl':        0.95
+      },
+
+      // Transmision (D-09)
+      transmission_factors: {
+        'manuelle':    1.00,
+        'automatique': 1.05
+      },
+
+      // Ciudades MA (D-07, ALG-05)
+      // Casablanca +8%, Oujda -7% (confirmados en CONTEXT.md)
+      city_factors: {
+        'Casablanca': 1.08,
+        'Rabat':      1.05,
+        'Marrakech':  1.04,
+        'Tanger':     1.03,
+        'Agadir':     1.02,
+        'Fes':        1.00,
+        'Meknes':     0.98,
+        'Tetouan':    0.97,
+        'Autres':     0.96,
+        'Oujda':      0.93
+      },
+
+      // Media km/ano MA para calculo de factor km (ALG-03, D-06)
+      km_per_year: 15000,
+
+      // Coeficiente de ajuste km: 20% por cada 100k km de desviacion
+      km_coefficient: 0.20,
+
+      // Limites del factor km (clamp)
+      km_min: 0.70,
+      km_max: 1.30,
+
+      // Floor minimo del precio final en DH (ALG-06)
+      price_floor: 8000
+    };
+
     // ═══════════════════════════════════════════════════════════
     // ROUTER — Hash-based SPA navigation
     // Cada página es una <section class="page" id="page-X">.
