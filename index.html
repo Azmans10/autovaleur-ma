@@ -655,6 +655,85 @@
       }).format(amount) + ' DH';
     }
 
+    // ===============================================================
+    // CAR_DB — Base de datos de coches del mercado marroqui
+    // 14 marcas, 3 modelos por marca, precios base ref. ~2020
+    // Fuente: calibracion Claude via Avito.ma/Moteur.ma 2024-2025
+    // ===============================================================
+
+    var CAR_DB = {
+      'Dacia': {
+        'Logan':   { base_price: 105000, years: [2012, 2024], fuel_types: ['diesel', 'essence'] },
+        'Sandero': { base_price: 100000, years: [2012, 2024], fuel_types: ['diesel', 'essence'] },
+        'Duster':  { base_price: 160000, years: [2012, 2024], fuel_types: ['diesel', 'essence'] }
+      },
+      'Renault': {
+        'Clio':   { base_price: 135000, years: [2013, 2024], fuel_types: ['diesel', 'essence'] },
+        'Megane': { base_price: 155000, years: [2013, 2024], fuel_types: ['diesel', 'essence'] },
+        'Kadjar': { base_price: 185000, years: [2015, 2024], fuel_types: ['diesel'] }
+      },
+      'Peugeot': {
+        '208':  { base_price: 130000, years: [2013, 2024], fuel_types: ['diesel', 'essence'] },
+        '301':  { base_price: 125000, years: [2013, 2023], fuel_types: ['diesel', 'essence'] },
+        '3008': { base_price: 240000, years: [2017, 2024], fuel_types: ['diesel'] }
+      },
+      'Citroen': {
+        'C3':       { base_price: 120000, years: [2013, 2024], fuel_types: ['diesel', 'essence'] },
+        'C4':       { base_price: 145000, years: [2012, 2023], fuel_types: ['diesel', 'essence'] },
+        'Berlingo': { base_price: 130000, years: [2012, 2023], fuel_types: ['diesel'] }
+      },
+      'Hyundai': {
+        'i10':    { base_price: 95000,  years: [2014, 2024], fuel_types: ['essence'] },
+        'i20':    { base_price: 120000, years: [2015, 2024], fuel_types: ['essence', 'diesel'] },
+        'Tucson': { base_price: 225000, years: [2016, 2024], fuel_types: ['diesel'] }
+      },
+      'Kia': {
+        'Picanto':  { base_price: 90000,  years: [2014, 2024], fuel_types: ['essence'] },
+        'Rio':      { base_price: 115000, years: [2015, 2024], fuel_types: ['essence', 'diesel'] },
+        'Sportage': { base_price: 220000, years: [2016, 2024], fuel_types: ['diesel'] }
+      },
+      'Toyota': {
+        'Corolla': { base_price: 180000, years: [2014, 2024], fuel_types: ['essence', 'hybride'] },
+        'Yaris':   { base_price: 145000, years: [2015, 2024], fuel_types: ['essence'] },
+        'RAV4':    { base_price: 260000, years: [2016, 2024], fuel_types: ['essence', 'hybride'] }
+      },
+      'VW': {
+        'Golf':   { base_price: 240000, years: [2013, 2024], fuel_types: ['diesel', 'essence'] },
+        'Polo':   { base_price: 155000, years: [2014, 2024], fuel_types: ['diesel', 'essence'] },
+        'Passat': { base_price: 260000, years: [2015, 2023], fuel_types: ['diesel'] }
+      },
+      'Ford': {
+        'Fiesta':   { base_price: 120000, years: [2013, 2022], fuel_types: ['diesel', 'essence'] },
+        'Focus':    { base_price: 155000, years: [2012, 2022], fuel_types: ['diesel', 'essence'] },
+        'EcoSport': { base_price: 185000, years: [2015, 2022], fuel_types: ['essence'] }
+      },
+      'Fiat': {
+        'Punto': { base_price: 90000,  years: [2012, 2018], fuel_types: ['essence'] },
+        '500':   { base_price: 110000, years: [2013, 2023], fuel_types: ['essence'] },
+        'Tipo':  { base_price: 130000, years: [2016, 2022], fuel_types: ['diesel', 'essence'] }
+      },
+      'Seat': {
+        'Ibiza': { base_price: 130000, years: [2013, 2023], fuel_types: ['diesel', 'essence'] },
+        'Leon':  { base_price: 170000, years: [2013, 2023], fuel_types: ['diesel', 'essence'] },
+        'Arona': { base_price: 200000, years: [2018, 2024], fuel_types: ['diesel', 'essence'] }
+      },
+      'Suzuki': {
+        'Swift':  { base_price: 110000, years: [2013, 2023], fuel_types: ['essence'] },
+        'Jimny':  { base_price: 200000, years: [2019, 2024], fuel_types: ['essence'] },
+        'Vitara': { base_price: 190000, years: [2016, 2024], fuel_types: ['diesel', 'essence'] }
+      },
+      'Mercedes': {
+        'Classe C': { base_price: 280000, years: [2015, 2024], fuel_types: ['diesel', 'essence'] },
+        'Classe E': { base_price: 350000, years: [2015, 2024], fuel_types: ['diesel'] },
+        'GLA':      { base_price: 320000, years: [2015, 2024], fuel_types: ['diesel'] }
+      },
+      'BMW': {
+        'Serie 3': { base_price: 270000, years: [2015, 2024], fuel_types: ['diesel'] },
+        'Serie 1': { base_price: 220000, years: [2015, 2024], fuel_types: ['diesel'] },
+        'X1':      { base_price: 280000, years: [2016, 2024], fuel_types: ['diesel'] }
+      }
+    };
+
     // ═══════════════════════════════════════════════════════════
     // ROUTER — Hash-based SPA navigation
     // Cada página es una <section class="page" id="page-X">.
