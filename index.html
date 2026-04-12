@@ -887,6 +887,8 @@
     // Ejecutar: abrir index.html, ver consola DevTools
     // ===============================================================
 
+    // Solo ejecutar tests en entorno local/dev (no en produccion)
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
     (function() {
       var passed = 0;
       var failed = 0;
@@ -969,6 +971,7 @@
         console.warn('Hay tests fallidos — revisar calibracion');
       }
     })();
+    } // end dev-only guard
 
     // ===============================================================
     // MARKETPLACES — URLs de busqueda en sitios marroquies
