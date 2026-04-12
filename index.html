@@ -803,6 +803,68 @@
       price_floor: 8000
     };
 
+    // ===============================================================
+    // ENGINE — Motor de valoracion de coches
+    // Formula: base_price x f_age x f_km x f_condition x f_fuel
+    //          x f_city x f_transmission (D-11)
+    // Retorna: { estimated_price, price_range, breakdown } (D-12)
+    // ===============================================================
+    var Engine = {
+      estimate: function(params) {
+        // params: { make, model, year, mileage, condition, fuel, transmission, city }
+
+        // Validacion: marca y modelo deben existir en CAR_DB
+        var carData = CAR_DB[params.make] && CAR_DB[params.make][params.model];
+        if (!carData) return null;
+
+        // Calculo de edad — parseInt para soportar year como string (p.ej. desde <select>)
+        var currentYear = new Date().getFullYear();
+        var age = Math.max(0, currentYear - parseInt(params.year, 10));
+
+        // Factor edad (ALG-02)
+        var ageKey = Math.min(age, 15);
+        var f_age = DEPRECIATION.age_factors[ageKey];
+
+        // Factor kilometraje (ALG-03) — usa constantes de DEPRECIATION
+        var expectedKm = age * DEPRECIATION.km_per_year;
+        var kmDiff = expectedKm - params.mileage;
+        var f_km = 1 + (kmDiff / 100000) * DEPRECIATION.km_coefficient;
+        f_km = Math.max(DEPRECIATION.km_min, Math.min(DEPRECIATION.km_max, f_km));
+
+        // Factores cualitativos
+        var f_condition    = DEPRECIATION.condition_factors[params.condition]    || 1.00;
+        var f_fuel         = DEPRECIATION.fuel_factors[params.fuel]              || 1.00;
+        var f_city         = DEPRECIATION.city_factors[params.city]              || 1.00;
+        var f_transmission = DEPRECIATION.transmission_factors[params.transmission] || 1.00;
+
+        // Multiplicacion en cadena (D-11)
+        var raw = carData.base_price * f_age * f_km * f_condition * f_fuel * f_city * f_transmission;
+
+        // Floor minimo 8000 DH + redondeo a centenas (ALG-06, D-14)
+        var estimated_price = Math.max(DEPRECIATION.price_floor, Math.round(raw / 100) * 100);
+
+        // Rango +/-10% (ALG-07, D-13)
+        var price_range = {
+          min: Math.round(estimated_price * 0.90 / 100) * 100,
+          max: Math.round(estimated_price * 1.10 / 100) * 100
+        };
+
+        // Breakdown de 7 lineas — amount_dh acumulativo (D-12)
+        var breakdown = [
+          { label: 'Prix de base',                     factor: 1.00,           amount_dh: carData.base_price },
+          { label: 'Age (' + age + ' ans)',             factor: f_age,          amount_dh: Math.round(carData.base_price * f_age) },
+          { label: 'Kilometrage',                       factor: f_km,           amount_dh: Math.round(carData.base_price * f_age * f_km) },
+          { label: 'Etat',                              factor: f_condition,    amount_dh: Math.round(carData.base_price * f_age * f_km * f_condition) },
+          { label: 'Carburant',                         factor: f_fuel,         amount_dh: Math.round(carData.base_price * f_age * f_km * f_condition * f_fuel) },
+          { label: 'Ville',                             factor: f_city,         amount_dh: Math.round(carData.base_price * f_age * f_km * f_condition * f_fuel * f_city) },
+          { label: 'Transmission',                      factor: f_transmission, amount_dh: estimated_price }
+        ];
+
+        // Retorno completo (D-12)
+        return { estimated_price: estimated_price, price_range: price_range, breakdown: breakdown };
+      }
+    };
+
     // ═══════════════════════════════════════════════════════════
     // ROUTER — Hash-based SPA navigation
     // Cada página es una <section class="page" id="page-X">.
