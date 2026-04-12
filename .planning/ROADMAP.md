@@ -64,11 +64,11 @@ Plans:
 **Plans**: 5 plans
 
 Plans:
-- [ ] 03-01: Crear objeto CAR_DB con 14 marcas × modelos × años × precio_base (JSON embebido)
-- [ ] 03-02: Implementar objeto DEPRECIATION (tabla edad, km_factor, condition, fuel, transmission, city)
-- [ ] 03-03: Implementar Engine.estimate(params) → { estimated_price, price_range, breakdown }
-- [ ] 03-04: Tests inline en consola: verificar 5 casos representativos del mercado MA
-- [ ] 03-05: Implementar módulo Marketplaces para generar URLs de búsqueda en Avito, Moteur y Wandaloo
+- [x] 03-01: Crear objeto CAR_DB con 14 marcas × modelos × años × precio_base (JSON embebido)
+- [x] 03-02: Implementar objeto DEPRECIATION (tabla edad, km_factor, condition, fuel, transmission, city)
+- [x] 03-03: Implementar Engine.estimate(params) → { estimated_price, price_range, breakdown }
+- [x] 03-04: Tests inline en consola: verificar 5 casos representativos del mercado MA
+- [x] 03-05: Implementar módulo Marketplaces para generar URLs de búsqueda en Avito, Moteur y Wandaloo
 
 ### Phase 4: Página Estimer
 **Goal**: La página principal: formulario de valoración + resultado con desglose + links a marketplaces.
