@@ -954,6 +954,54 @@
       }
     })();
 
+    // ===============================================================
+    // MARKETPLACES — URLs de busqueda en sitios marroquies
+    // Avito.ma, Moteur.ma, Wandaloo.com
+    // Solo marca + modelo + ano (D-16), sin peticiones de red
+    // ===============================================================
+    var Marketplaces = {
+      /**
+       * Normalizar texto para uso en URLs: minusculas, espacios a guion,
+       * acentos franceses a ASCII.
+       */
+      _slug: function(str) {
+        return str.toLowerCase()
+          .replace(/\s+/g, '-')
+          .replace(/[éèê]/g, 'e')
+          .replace(/[àâ]/g, 'a')
+          .replace(/[ô]/g, 'o')
+          .replace(/[ûù]/g, 'u')
+          .replace(/[ç]/g, 'c')
+          .replace(/[ï]/g, 'i');
+      },
+
+      /**
+       * Generar URLs de busqueda para 3 marketplaces MA.
+       * @param {string} make - Marca (ej: 'Dacia')
+       * @param {string} model - Modelo (ej: 'Logan')
+       * @param {number|string} year - Ano (ej: 2019)
+       * @returns {{ avito: string, moteur: string, wandaloo: string }}
+       */
+      getLinks: function(make, model, year) {
+        var slugMake = this._slug(make);
+        var slugModel = this._slug(model);
+
+        return {
+          // Avito.ma — URL verificada via web search (RESEARCH.md)
+          // Patron: /sp/voitures/{marca}-{modelo}-{ano}
+          avito: 'https://www.avito.ma/sp/voitures/' + slugMake + '-' + slugModel + '-' + year,
+
+          // Moteur.ma — URL parcialmente verificada
+          // Patron: /fr/voiture/achat-voiture-occasion/marque/{marca}/modele/{modelo}/
+          moteur: 'https://www.moteur.ma/fr/voiture/achat-voiture-occasion/marque/' + slugMake + '/modele/' + slugModel + '/',
+
+          // Wandaloo — fallback con query string general (usa IDs internos, no slugs)
+          // Patron: busqueda general con query string
+          wandaloo: 'https://www.wandaloo.com/occasion/voiture-occasion-maroc-annonce.html?q=' + encodeURIComponent(make + ' ' + model + ' ' + year)
+        };
+      }
+    };
+
     // ═══════════════════════════════════════════════════════════
     // ROUTER — Hash-based SPA navigation
     // Cada página es una <section class="page" id="page-X">.
