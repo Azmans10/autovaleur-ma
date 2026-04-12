@@ -839,11 +839,19 @@
         var f_km = 1 + (kmDiff / 100000) * DEPRECIATION.km_coefficient;
         f_km = Math.max(DEPRECIATION.km_min, Math.min(DEPRECIATION.km_max, f_km));
 
-        // Factores cualitativos
-        var f_condition    = DEPRECIATION.condition_factors[params.condition]    || 1.00;
-        var f_fuel         = DEPRECIATION.fuel_factors[params.fuel]              || 1.00;
-        var f_city         = DEPRECIATION.city_factors[params.city]              || 1.00;
-        var f_transmission = DEPRECIATION.transmission_factors[params.transmission] || 1.00;
+        // Factores cualitativos — retorna null si la clave no existe en DEPRECIATION
+        // (evita que typos o valores de UI no reconocidos produzcan un precio silenciosamente incorrecto)
+        var f_condition = DEPRECIATION.condition_factors[params.condition];
+        if (f_condition === undefined) return null;
+
+        var f_fuel = DEPRECIATION.fuel_factors[params.fuel];
+        if (f_fuel === undefined) return null;
+
+        var f_city = DEPRECIATION.city_factors[params.city];
+        if (f_city === undefined) return null;
+
+        var f_transmission = DEPRECIATION.transmission_factors[params.transmission];
+        if (f_transmission === undefined) return null;
 
         // Multiplicacion en cadena (D-11)
         var raw = carData.base_price * f_age * f_km * f_condition * f_fuel * f_city * f_transmission;
