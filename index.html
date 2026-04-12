@@ -865,6 +865,95 @@
       }
     };
 
+    // ===============================================================
+    // TESTS — Verificacion inline del motor de valoracion
+    // 5 casos representativos del mercado MA
+    // Ejecutar: abrir index.html, ver consola DevTools
+    // ===============================================================
+
+    (function() {
+      var passed = 0;
+      var failed = 0;
+      var currentYear = new Date().getFullYear();
+
+      function test(name, params, checks) {
+        var r = Engine.estimate(params);
+        var errors = [];
+
+        if (!r) {
+          console.error('[FAIL] ' + name + ': Engine.estimate retorno null');
+          failed++;
+          return;
+        }
+
+        if (checks.priceMin && r.estimated_price < checks.priceMin) {
+          errors.push('precio ' + r.estimated_price + ' < min ' + checks.priceMin);
+        }
+        if (checks.priceMax && r.estimated_price > checks.priceMax) {
+          errors.push('precio ' + r.estimated_price + ' > max ' + checks.priceMax);
+        }
+        if (r.breakdown.length !== 7) {
+          errors.push('breakdown.length = ' + r.breakdown.length + ' (esperado 7)');
+        }
+        if (Math.round(r.price_range.min / 100) * 100 !== Math.round(r.estimated_price * 0.9 / 100) * 100) {
+          errors.push('price_range.min incorrecto');
+        }
+        if (Math.round(r.price_range.max / 100) * 100 !== Math.round(r.estimated_price * 1.1 / 100) * 100) {
+          errors.push('price_range.max incorrecto');
+        }
+
+        if (errors.length > 0) {
+          console.error('[FAIL] ' + name + ': ' + errors.join(', '));
+          failed++;
+        } else {
+          console.log('[PASS] ' + name + ' \u2192 ' + r.estimated_price + ' DH');
+          passed++;
+        }
+      }
+
+      console.log('=== AutoValeur Tests (' + currentYear + ') ===');
+
+      // T1: Caso critico ROADMAP — Dacia Logan 2019, 85k km, diesel, bon, Casablanca
+      // Objetivo: precio entre 50.000 y 70.000 DH
+      test('T1: Logan 2019 diesel bon Casablanca', {
+        make: 'Dacia', model: 'Logan', year: 2019, mileage: 85000,
+        condition: 'bon', fuel: 'diesel', transmission: 'manuelle', city: 'Casablanca'
+      }, { priceMin: 50000, priceMax: 70000 });
+
+      // T2: Segmento premium — BMW Serie 3 2018, 120k km, diesel, moyen, Rabat
+      // Precio esperado: ~65.000-90.000 DH (premium depreciado + estado moyen)
+      test('T2: BMW Serie 3 2018 diesel moyen Rabat', {
+        make: 'BMW', model: 'Serie 3', year: 2018, mileage: 120000,
+        condition: 'moyen', fuel: 'diesel', transmission: 'automatique', city: 'Rabat'
+      }, { priceMin: 50000, priceMax: 120000 });
+
+      // T3: Citadine reciente — Kia Picanto 2022, 25k km, essence, excellent, Marrakech
+      // Precio esperado: ~60.000-85.000 DH (citadine barata, pocas kms, buen estado)
+      test('T3: Kia Picanto 2022 essence excellent Marrakech', {
+        make: 'Kia', model: 'Picanto', year: 2022, mileage: 25000,
+        condition: 'excellent', fuel: 'essence', transmission: 'manuelle', city: 'Marrakech'
+      }, { priceMin: 50000, priceMax: 100000 });
+
+      // T4: SUV popular — Hyundai Tucson 2020, 60k km, diesel, bon, Tanger
+      // Precio esperado: ~110.000-160.000 DH (SUV popular, buen estado, pocas kms)
+      test('T4: Hyundai Tucson 2020 diesel bon Tanger', {
+        make: 'Hyundai', model: 'Tucson', year: 2020, mileage: 60000,
+        condition: 'bon', fuel: 'diesel', transmission: 'automatique', city: 'Tanger'
+      }, { priceMin: 80000, priceMax: 180000 });
+
+      // T5: Edge case floor — Fiat Punto 2012, 250k km, mauvais, essence, Oujda
+      // Verifica que el floor de 8.000 DH se aplica (coche muy depreciado)
+      test('T5: Fiat Punto 2012 mauvais essence Oujda (floor test)', {
+        make: 'Fiat', model: 'Punto', year: 2012, mileage: 250000,
+        condition: 'mauvais', fuel: 'essence', transmission: 'manuelle', city: 'Oujda'
+      }, { priceMin: 8000, priceMax: 25000 });
+
+      console.log('=== Resultados: ' + passed + ' PASS, ' + failed + ' FAIL ===');
+      if (failed > 0) {
+        console.warn('Hay tests fallidos — revisar calibracion');
+      }
+    })();
+
     // ═══════════════════════════════════════════════════════════
     // ROUTER — Hash-based SPA navigation
     // Cada página es una <section class="page" id="page-X">.
