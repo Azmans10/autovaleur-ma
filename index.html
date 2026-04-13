@@ -573,6 +573,7 @@
       width: 100%;
       border-collapse: collapse;
       font-size: var(--font-size-sm);
+      margin-top: var(--sp-sm);
     }
 
     .breakdown-table th {
@@ -766,7 +767,21 @@
           <p class="result-range" id="result-range"></p>
         </div>
 
-        <!-- tabla de desglose: PENDIENTE — lo añade Plan 04-04 -->
+        <!-- tabla de desglose -->
+        <div class="card" style="margin-bottom: var(--sp-md);">
+          <h3 data-i18n="result.breakdown.title">Détail du calcul</h3>
+          <table class="breakdown-table">
+            <thead>
+              <tr>
+                <th data-i18n="result.breakdown.col.label">Facteur</th>
+                <th data-i18n="result.breakdown.col.factor">Coeff.</th>
+                <th data-i18n="result.breakdown.col.amount">Montant</th>
+              </tr>
+            </thead>
+            <tbody id="breakdown-body"></tbody>
+          </table>
+        </div>
+
         <!-- chips de marketplaces: PENDIENTE — lo añade Plan 04-05 -->
 
         <button id="btn-new-estimate" class="btn-secondary" data-i18n="result.new_estimate">
