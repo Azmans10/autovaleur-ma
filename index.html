@@ -1819,6 +1819,10 @@
         EstimerForm._populateYears('', '');
         EstimerForm._updateSubmitState();
 
+        // Ocultar también la sección de marketplaces (D-15)
+        var marketplaceSection = document.getElementById('marketplace-section');
+        if (marketplaceSection) marketplaceSection.hidden = true;
+
         // Ocultar resultado con animación (quitar .visible, esperar transición, poner hidden)
         var resultSection = document.getElementById('result-section');
         resultSection.classList.remove('visible');
@@ -1859,6 +1863,16 @@
             '<td class="' + factorClass + '">' + formatPrice(row.amount_dh, I18n.currentLang) + '</td>';
           tbody.appendChild(tr);
         });
+      }
+
+      // ── CHIPS DE MARKETPLACES (D-14, EST-07) ────────────────────────
+      function renderMarketplaces(make, model, year) {
+        var links = Marketplaces.getLinks(make, model, year);
+        document.getElementById('link-avito').href    = links.avito;
+        document.getElementById('link-moteur').href   = links.moteur;
+        document.getElementById('link-wandaloo').href = links.wandaloo;
+        var section = document.getElementById('marketplace-section');
+        if (section) section.hidden = false;
       }
 
       console.log('AutoValeur MA — i18n + Router + EstimerForm inicializados');
