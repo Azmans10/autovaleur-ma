@@ -1,7 +1,8 @@
 ---
 phase: 5
 slug: historique-y-comparer
-status: draft
+status: approved
+reviewed_at: 2026-04-13
 shadcn_initialized: false
 preset: none
 created: 2026-04-13
