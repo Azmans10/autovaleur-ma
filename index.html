@@ -611,8 +611,7 @@
 
     /* ── MARKETPLACE CHIPS ──────────────────────────────────────── */
     .marketplace-section {
-      margin-top: var(--sp-lg);
-      margin-bottom: var(--sp-lg);
+      margin-block: var(--sp-lg);
     }
 
     .marketplace-label {
@@ -629,9 +628,10 @@
 
     .marketplace-chip {
       flex: 1;
-      min-width: 80px;
+      min-inline-size: 80px;
       text-align: center;
-      padding: var(--sp-sm) var(--sp-md);
+      padding-block: var(--sp-sm);
+      padding-inline: var(--sp-md);
       background: var(--surface-3);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
@@ -782,7 +782,15 @@
           </table>
         </div>
 
-        <!-- chips de marketplaces: PENDIENTE — lo añade Plan 04-05 -->
+        <!-- chips de marketplaces -->
+        <div id="marketplace-section" class="marketplace-section" hidden>
+          <p class="marketplace-label" data-i18n="result.marketplace.label">Voir les annonces</p>
+          <div class="marketplace-chips">
+            <a id="link-avito"    class="marketplace-chip" href="#" target="_blank" rel="noopener">Avito</a>
+            <a id="link-moteur"   class="marketplace-chip" href="#" target="_blank" rel="noopener">Moteur</a>
+            <a id="link-wandaloo" class="marketplace-chip" href="#" target="_blank" rel="noopener">Wandaloo</a>
+          </div>
+        </div>
 
         <button id="btn-new-estimate" class="btn-secondary" data-i18n="result.new_estimate">
           Nouvelle estimation
