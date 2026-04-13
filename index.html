@@ -1100,64 +1100,120 @@
 
     var CAR_DB = {
       'Dacia': {
-        'Logan':   { base_price: 105000, years: [2012, 2024], fuel_types: ['diesel', 'essence'] },
-        'Sandero': { base_price: 100000, years: [2012, 2024], fuel_types: ['diesel', 'essence'] },
-        'Duster':  { base_price: 160000, years: [2012, 2024], fuel_types: ['diesel', 'essence'] }
+        'Logan':     { base_price: 105000, years: [2012, 2024], fuel_types: ['diesel', 'essence'] },
+        'Sandero':   { base_price: 100000, years: [2012, 2024], fuel_types: ['diesel', 'essence'] },
+        'Duster':    { base_price: 160000, years: [2012, 2024], fuel_types: ['diesel', 'essence'] },
+        'Logan MCV': { base_price: 115000, years: [2013, 2022], fuel_types: ['diesel', 'essence'] },
+        'Spring':    { base_price: 130000, years: [2021, 2024], fuel_types: ['electrique'] },
+        'Jogger':    { base_price: 180000, years: [2022, 2024], fuel_types: ['diesel', 'essence'] },
+        'Dokker':    { base_price: 120000, years: [2013, 2021], fuel_types: ['diesel'] }
       },
       'Renault': {
-        'Clio':   { base_price: 135000, years: [2013, 2024], fuel_types: ['diesel', 'essence'] },
-        'Megane': { base_price: 155000, years: [2013, 2024], fuel_types: ['diesel', 'essence'] },
-        'Kadjar': { base_price: 185000, years: [2015, 2024], fuel_types: ['diesel'] }
+        'Clio':    { base_price: 135000, years: [2013, 2024], fuel_types: ['diesel', 'essence'] },
+        'Megane':  { base_price: 155000, years: [2013, 2024], fuel_types: ['diesel', 'essence'] },
+        'Kadjar':  { base_price: 185000, years: [2015, 2024], fuel_types: ['diesel'] },
+        'Symbol':  { base_price: 100000, years: [2013, 2021], fuel_types: ['essence'] },
+        'Fluence': { base_price: 130000, years: [2012, 2020], fuel_types: ['diesel', 'essence'] },
+        'Captur':  { base_price: 175000, years: [2014, 2024], fuel_types: ['diesel', 'essence'] },
+        'Koleos':  { base_price: 230000, years: [2017, 2024], fuel_types: ['diesel'] },
+        'Kangoo':  { base_price: 125000, years: [2012, 2024], fuel_types: ['diesel'] },
+        'Trafic':  { base_price: 210000, years: [2015, 2024], fuel_types: ['diesel'] }
       },
       'Peugeot': {
-        '208':  { base_price: 130000, years: [2013, 2024], fuel_types: ['diesel', 'essence'] },
-        '301':  { base_price: 125000, years: [2013, 2023], fuel_types: ['diesel', 'essence'] },
-        '3008': { base_price: 240000, years: [2017, 2024], fuel_types: ['diesel'] }
+        '208':     { base_price: 130000, years: [2013, 2024], fuel_types: ['diesel', 'essence'] },
+        '301':     { base_price: 125000, years: [2013, 2023], fuel_types: ['diesel', 'essence'] },
+        '3008':    { base_price: 240000, years: [2017, 2024], fuel_types: ['diesel'] },
+        '2008':    { base_price: 175000, years: [2014, 2024], fuel_types: ['diesel', 'essence'] },
+        '308':     { base_price: 170000, years: [2014, 2024], fuel_types: ['diesel', 'essence'] },
+        '407':     { base_price: 100000, years: [2012, 2016], fuel_types: ['diesel', 'essence'] },
+        '5008':    { base_price: 290000, years: [2018, 2024], fuel_types: ['diesel'] },
+        'Partner': { base_price: 120000, years: [2012, 2023], fuel_types: ['diesel'] },
+        'Rifter':  { base_price: 180000, years: [2019, 2024], fuel_types: ['diesel'] }
       },
       'Citroen': {
-        'C3':       { base_price: 120000, years: [2013, 2024], fuel_types: ['diesel', 'essence'] },
-        'C4':       { base_price: 145000, years: [2012, 2023], fuel_types: ['diesel', 'essence'] },
-        'Berlingo': { base_price: 130000, years: [2012, 2023], fuel_types: ['diesel'] }
+        'C3':          { base_price: 120000, years: [2013, 2024], fuel_types: ['diesel', 'essence'] },
+        'C4':          { base_price: 145000, years: [2012, 2023], fuel_types: ['diesel', 'essence'] },
+        'Berlingo':    { base_price: 130000, years: [2012, 2023], fuel_types: ['diesel'] },
+        'C-Elysee':    { base_price: 105000, years: [2013, 2022], fuel_types: ['diesel', 'essence'] },
+        'C5 Aircross': { base_price: 240000, years: [2019, 2024], fuel_types: ['diesel'] },
+        'Jumpy':       { base_price: 200000, years: [2014, 2024], fuel_types: ['diesel'] },
+        'DS3':         { base_price: 130000, years: [2013, 2020], fuel_types: ['diesel', 'essence'] },
+        'DS5':         { base_price: 195000, years: [2013, 2020], fuel_types: ['diesel'] }
       },
       'Hyundai': {
-        'i10':    { base_price: 95000,  years: [2014, 2024], fuel_types: ['essence'] },
-        'i20':    { base_price: 120000, years: [2015, 2024], fuel_types: ['essence', 'diesel'] },
-        'Tucson': { base_price: 225000, years: [2016, 2024], fuel_types: ['diesel'] }
+        'i10':      { base_price: 95000,  years: [2014, 2024], fuel_types: ['essence'] },
+        'i20':      { base_price: 120000, years: [2015, 2024], fuel_types: ['essence', 'diesel'] },
+        'Tucson':   { base_price: 225000, years: [2016, 2024], fuel_types: ['diesel'] },
+        'Accent':   { base_price: 110000, years: [2013, 2022], fuel_types: ['essence', 'diesel'] },
+        'Elantra':  { base_price: 145000, years: [2014, 2024], fuel_types: ['essence', 'diesel'] },
+        'i30':      { base_price: 155000, years: [2013, 2023], fuel_types: ['diesel', 'essence'] },
+        'Santa Fe': { base_price: 310000, years: [2015, 2024], fuel_types: ['diesel'] },
+        'ix35':     { base_price: 175000, years: [2012, 2019], fuel_types: ['diesel', 'essence'] },
+        'Kona':     { base_price: 195000, years: [2018, 2024], fuel_types: ['diesel', 'essence'] }
       },
       'Kia': {
         'Picanto':  { base_price: 90000,  years: [2014, 2024], fuel_types: ['essence'] },
         'Rio':      { base_price: 115000, years: [2015, 2024], fuel_types: ['essence', 'diesel'] },
-        'Sportage': { base_price: 220000, years: [2016, 2024], fuel_types: ['diesel'] }
+        'Sportage': { base_price: 220000, years: [2016, 2024], fuel_types: ['diesel'] },
+        'Cerato':   { base_price: 155000, years: [2013, 2023], fuel_types: ['essence', 'diesel'] },
+        'Ceed':     { base_price: 160000, years: [2014, 2024], fuel_types: ['diesel', 'essence'] },
+        'Sorento':  { base_price: 300000, years: [2015, 2024], fuel_types: ['diesel'] },
+        'Stonic':   { base_price: 185000, years: [2018, 2024], fuel_types: ['diesel', 'essence'] },
+        'Carens':   { base_price: 180000, years: [2013, 2023], fuel_types: ['diesel'] }
       },
       'Toyota': {
-        'Corolla': { base_price: 180000, years: [2014, 2024], fuel_types: ['essence', 'hybride'] },
-        'Yaris':   { base_price: 145000, years: [2015, 2024], fuel_types: ['essence'] },
-        'RAV4':    { base_price: 260000, years: [2016, 2024], fuel_types: ['essence', 'hybride'] }
+        'Corolla':      { base_price: 180000, years: [2014, 2024], fuel_types: ['essence', 'hybride'] },
+        'Yaris':        { base_price: 145000, years: [2015, 2024], fuel_types: ['essence'] },
+        'RAV4':         { base_price: 260000, years: [2016, 2024], fuel_types: ['essence', 'hybride'] },
+        'Hilux':        { base_price: 320000, years: [2012, 2024], fuel_types: ['diesel'] },
+        'Land Cruiser': { base_price: 650000, years: [2012, 2024], fuel_types: ['diesel'] },
+        'Fortuner':     { base_price: 380000, years: [2016, 2024], fuel_types: ['diesel'] },
+        'Prado':        { base_price: 480000, years: [2014, 2024], fuel_types: ['diesel'] },
+        'C-HR':         { base_price: 230000, years: [2018, 2024], fuel_types: ['essence', 'hybride'] },
+        'Camry':        { base_price: 310000, years: [2015, 2024], fuel_types: ['essence', 'hybride'] }
       },
       'VW': {
-        'Golf':   { base_price: 240000, years: [2013, 2024], fuel_types: ['diesel', 'essence'] },
-        'Polo':   { base_price: 155000, years: [2014, 2024], fuel_types: ['diesel', 'essence'] },
-        'Passat': { base_price: 260000, years: [2015, 2023], fuel_types: ['diesel'] }
+        'Golf':    { base_price: 240000, years: [2013, 2024], fuel_types: ['diesel', 'essence'] },
+        'Polo':    { base_price: 155000, years: [2014, 2024], fuel_types: ['diesel', 'essence'] },
+        'Passat':  { base_price: 260000, years: [2015, 2023], fuel_types: ['diesel'] },
+        'Tiguan':  { base_price: 295000, years: [2016, 2024], fuel_types: ['diesel', 'essence'] },
+        'T-Roc':   { base_price: 265000, years: [2018, 2024], fuel_types: ['diesel', 'essence'] },
+        'Touareg': { base_price: 480000, years: [2014, 2024], fuel_types: ['diesel'] },
+        'Touran':  { base_price: 240000, years: [2015, 2023], fuel_types: ['diesel'] }
       },
       'Ford': {
         'Fiesta':   { base_price: 120000, years: [2013, 2022], fuel_types: ['diesel', 'essence'] },
         'Focus':    { base_price: 155000, years: [2012, 2022], fuel_types: ['diesel', 'essence'] },
-        'EcoSport': { base_price: 185000, years: [2015, 2022], fuel_types: ['essence'] }
+        'EcoSport': { base_price: 185000, years: [2015, 2022], fuel_types: ['essence'] },
+        'Ranger':   { base_price: 290000, years: [2012, 2024], fuel_types: ['diesel'] },
+        'Kuga':     { base_price: 220000, years: [2015, 2023], fuel_types: ['diesel', 'essence'] },
+        'Explorer': { base_price: 420000, years: [2015, 2024], fuel_types: ['essence'] },
+        'Transit':  { base_price: 200000, years: [2013, 2024], fuel_types: ['diesel'] }
       },
       'Fiat': {
-        'Punto': { base_price: 90000,  years: [2012, 2018], fuel_types: ['essence'] },
-        '500':   { base_price: 110000, years: [2013, 2023], fuel_types: ['essence'] },
-        'Tipo':  { base_price: 130000, years: [2016, 2022], fuel_types: ['diesel', 'essence'] }
+        'Punto':  { base_price: 90000,  years: [2012, 2018], fuel_types: ['essence'] },
+        '500':    { base_price: 110000, years: [2013, 2023], fuel_types: ['essence'] },
+        'Tipo':   { base_price: 130000, years: [2016, 2022], fuel_types: ['diesel', 'essence'] },
+        'Panda':  { base_price: 85000,  years: [2013, 2022], fuel_types: ['essence'] },
+        'Doblo':  { base_price: 125000, years: [2012, 2022], fuel_types: ['diesel'] },
+        'Bravo':  { base_price: 100000, years: [2012, 2018], fuel_types: ['diesel', 'essence'] }
       },
       'Seat': {
-        'Ibiza': { base_price: 130000, years: [2013, 2023], fuel_types: ['diesel', 'essence'] },
-        'Leon':  { base_price: 170000, years: [2013, 2023], fuel_types: ['diesel', 'essence'] },
-        'Arona': { base_price: 200000, years: [2018, 2024], fuel_types: ['diesel', 'essence'] }
+        'Ibiza':   { base_price: 130000, years: [2013, 2023], fuel_types: ['diesel', 'essence'] },
+        'Leon':    { base_price: 170000, years: [2013, 2023], fuel_types: ['diesel', 'essence'] },
+        'Arona':   { base_price: 200000, years: [2018, 2024], fuel_types: ['diesel', 'essence'] },
+        'Ateca':   { base_price: 230000, years: [2017, 2024], fuel_types: ['diesel', 'essence'] },
+        'Tarraco': { base_price: 290000, years: [2019, 2024], fuel_types: ['diesel'] },
+        'Toledo':  { base_price: 145000, years: [2013, 2020], fuel_types: ['diesel', 'essence'] }
       },
       'Suzuki': {
-        'Swift':  { base_price: 110000, years: [2013, 2023], fuel_types: ['essence'] },
-        'Jimny':  { base_price: 200000, years: [2019, 2024], fuel_types: ['essence'] },
-        'Vitara': { base_price: 190000, years: [2016, 2024], fuel_types: ['diesel', 'essence'] }
+        'Swift':   { base_price: 110000, years: [2013, 2023], fuel_types: ['essence'] },
+        'Jimny':   { base_price: 200000, years: [2019, 2024], fuel_types: ['essence'] },
+        'Vitara':  { base_price: 190000, years: [2016, 2024], fuel_types: ['diesel', 'essence'] },
+        'Alto':    { base_price: 75000,  years: [2012, 2019], fuel_types: ['essence'] },
+        'Celerio': { base_price: 85000,  years: [2015, 2022], fuel_types: ['essence'] },
+        'SX4':     { base_price: 145000, years: [2013, 2021], fuel_types: ['diesel', 'essence'] },
+        'Baleno':  { base_price: 105000, years: [2016, 2022], fuel_types: ['essence'] }
       },
       'Mercedes': {
         'Classe A':  { base_price: 210000, years: [2014, 2024], fuel_types: ['diesel', 'essence'] },
@@ -1178,7 +1234,12 @@
       'BMW': {
         'Serie 3': { base_price: 270000, years: [2015, 2024], fuel_types: ['diesel'] },
         'Serie 1': { base_price: 220000, years: [2015, 2024], fuel_types: ['diesel'] },
-        'X1':      { base_price: 280000, years: [2016, 2024], fuel_types: ['diesel'] }
+        'X1':      { base_price: 280000, years: [2016, 2024], fuel_types: ['diesel'] },
+        'Serie 5': { base_price: 380000, years: [2014, 2024], fuel_types: ['diesel'] },
+        'Serie 7': { base_price: 600000, years: [2015, 2024], fuel_types: ['diesel', 'essence'] },
+        'X3':      { base_price: 350000, years: [2015, 2024], fuel_types: ['diesel'] },
+        'X5':      { base_price: 520000, years: [2015, 2024], fuel_types: ['diesel'] },
+        'X6':      { base_price: 580000, years: [2016, 2024], fuel_types: ['diesel', 'essence'] }
       }
     };
 
