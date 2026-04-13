@@ -1675,6 +1675,121 @@
       I18n.init();
       Router.init();
       EstimerForm.init();
+
+      // ── SUBMIT HANDLER — Formulario Estimer ─────────────────────────
+      document.getElementById('estimer-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // 1. Recoger valores del formulario
+        var make         = document.getElementById('field-make').value;
+        var model        = document.getElementById('field-model').value;
+        var year         = parseInt(document.getElementById('field-year').value, 10);
+        var mileageRaw   = document.getElementById('field-mileage').value;
+        var mileage      = parseInt(mileageRaw, 10);
+        var condition    = document.getElementById('field-condition').value;
+        var fuel         = document.getElementById('field-fuel').value;
+        var transmission = document.getElementById('field-transmission').value;
+        var city         = document.getElementById('field-city').value;
+
+        // 2. Validar km (D-04)
+        var mileageError = document.getElementById('mileage-error');
+        if (!mileageRaw || isNaN(mileage) || mileage <= 0) {
+          mileageError.hidden = false;
+          document.getElementById('field-mileage').focus();
+          return;
+        }
+        mileageError.hidden = true;
+
+        // 3. Llamar Engine.estimate()
+        var result = Engine.estimate({
+          make: make,
+          model: model,
+          year: year,
+          mileage: mileage,
+          condition: condition,
+          fuel: fuel,
+          transmission: transmission,
+          city: city
+        });
+        if (!result) {
+          console.warn('AutoValeur — Engine.estimate() retornó null para los parámetros dados');
+          return;
+        }
+
+        // 4. Guardar en historial (D-12, EST-06)
+        History.save({
+          make:            make,
+          model:           model,
+          year:            year,
+          mileage:         mileage,
+          condition:       condition,
+          fuel:            fuel,
+          transmission:    transmission,
+          city:            city,
+          estimated_price: result.estimated_price,
+          price_range:     result.price_range,
+          breakdown:       result.breakdown
+        });
+
+        // 5. Renderizar resultado
+        renderResult(result, make, model, year);
+
+        // 6. Scroll suave al resultado (D-06)
+        document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      // ── FUNCIÓN renderResult() — orquesta el renderizado del resultado ──
+      function renderResult(result, make, model, year) {
+        // Rellenar precio y rango (IDs creados por Plan 04-03)
+        var priceEl = document.getElementById('result-price');
+        var rangeEl = document.getElementById('result-range');
+        if (priceEl) {
+          priceEl.textContent = formatPrice(result.estimated_price, I18n.currentLang);
+        }
+        if (rangeEl) {
+          rangeEl.textContent =
+            formatPrice(result.price_range.min, I18n.currentLang) +
+            ' – ' +
+            formatPrice(result.price_range.max, I18n.currentLang);
+        }
+
+        // Renderizar tabla de desglose (función añadida por Plan 04-04)
+        if (typeof renderBreakdown === 'function') {
+          renderBreakdown(result.breakdown);
+        }
+
+        // Renderizar chips de marketplaces (función añadida por Plan 04-05)
+        if (typeof renderMarketplaces === 'function') {
+          renderMarketplaces(make, model, year);
+        }
+
+        // Mostrar #result-section con animación (D-08):
+        // Secuencia: quitar hidden → forzar reflow → añadir .visible
+        var resultSection = document.getElementById('result-section');
+        resultSection.hidden = false;
+        resultSection.offsetHeight; // forzar reflow para activar CSS transition
+        resultSection.classList.add('visible');
+      }
+
+      // ── BOTÓN "Nouvelle estimation" (D-11) ──────────────────────────
+      document.getElementById('btn-new-estimate').addEventListener('click', function() {
+        // Limpiar formulario a estado inicial
+        document.getElementById('estimer-form').reset();
+        EstimerForm._populateModels('');
+        EstimerForm._populateYears('', '');
+        EstimerForm._updateSubmitState();
+
+        // Ocultar resultado con animación (quitar .visible, esperar transición, poner hidden)
+        var resultSection = document.getElementById('result-section');
+        resultSection.classList.remove('visible');
+        setTimeout(function() {
+          resultSection.hidden = true;
+        }, 250);
+
+        // Scroll al top de la página Estimer
+        document.getElementById('page-estimer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
       console.log('AutoValeur MA — i18n + Router + EstimerForm inicializados');
     });
 
