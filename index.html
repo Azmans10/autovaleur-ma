@@ -1510,6 +1510,53 @@
         console.warn('Hay tests fallidos — revisar calibracion');
       }
     })();
+
+    // === Tests History (Fase 5) ===
+    (function testHistoryFase5() {
+      console.log('=== Tests History (Fase 5) ===');
+
+      History.clear();
+      console.assert(History.getAll().length === 0, 'FAIL: clear() debe dejar array vacío');
+
+      History.save({ make: 'Dacia', model: 'Logan', year: 2019, mileage: 85000,
+                     condition: 'bon', fuel: 'diesel', transmission: 'manuelle', city: 'Casablanca',
+                     estimated_price: 58500, price_range: { min: 52700, max: 64400 }, breakdown: [] });
+      var all = History.getAll();
+      console.assert(all.length === 1, 'FAIL: getAll() debe retornar 1 entrada tras save()');
+
+      var id = all[0].id;
+      History.remove(id);
+      console.assert(History.getAll().length === 0, 'FAIL: remove(id) debe eliminar la entrada');
+
+      History.save({ make: 'BMW', model: 'Serie 3', year: 2018, mileage: 120000,
+                     condition: 'moyen', fuel: 'diesel', transmission: 'automatique', city: 'Rabat',
+                     estimated_price: 95000, price_range: { min: 85500, max: 104500 }, breakdown: [] });
+      History.save({ make: 'Kia', model: 'Picanto', year: 2022, mileage: 25000,
+                     condition: 'excellent', fuel: 'essence', transmission: 'manuelle', city: 'Marrakech',
+                     estimated_price: 72000, price_range: { min: 64800, max: 79200 }, breakdown: [] });
+      History.clear();
+      console.assert(History.getAll().length === 0, 'FAIL: clear() con 2 entradas debe dejar array vacío');
+
+      console.log('=== Tests History Fase 5: OK ===');
+    })();
+
+    // === Tests i18n keys (Fase 5) ===
+    (function testI18nKeysFase5() {
+      console.log('=== Tests i18n keys (Fase 5) ===');
+      var fase5Keys = [
+        'historique.empty', 'historique.clear', 'historique.confirm_clear', 'historique.delete',
+        'date.today', 'date.days_ago', 'date.weeks_ago',
+        'comparer.empty', 'comparer.empty_body', 'comparer.select_a', 'comparer.select_b', 'comparer.winner_badge'
+      ];
+      ['fr', 'ar'].forEach(function(lang) {
+        fase5Keys.forEach(function(key) {
+          var val = STRINGS[lang] && STRINGS[lang][key];
+          console.assert(val, 'FAIL: STRINGS.' + lang + '.' + key + ' no existe o está vacío');
+        });
+      });
+      console.log('=== Tests i18n keys Fase 5: OK ===');
+    })();
+
     } // end dev-only guard
 
     // ===============================================================
