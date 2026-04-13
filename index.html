@@ -663,7 +663,100 @@
     <!-- PÁGINA: Estimer (visible por defecto) -->
     <section id="page-estimer" class="page page-estimer">
       <h2 data-i18n="page.estimer.title">Estimer</h2>
-      <p>Formulaire d'estimation — <em>Phase 4</em></p>
+
+      <!-- FORMULARIO DE ESTIMACIÓN (D-01: scroll único, D-02: cascada nativa, D-03: orden campos) -->
+      <form id="estimer-form" novalidate>
+
+        <!-- Grupo cascada: Marca → Modelo → Año -->
+        <div class="form-group">
+          <label for="field-make" data-i18n="estimer.form.make">Marque</label>
+          <select id="field-make" name="make" required>
+            <option value="" data-i18n="estimer.form.make.placeholder">Choisir une marque</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="field-model" data-i18n="estimer.form.model">Modèle</label>
+          <select id="field-model" name="model" required disabled>
+            <option value="" data-i18n="estimer.form.model.placeholder">Choisir un modèle</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="field-year" data-i18n="estimer.form.year">Année</label>
+          <select id="field-year" name="year" required disabled>
+            <option value="" data-i18n="estimer.form.year.placeholder">Choisir une année</option>
+          </select>
+        </div>
+
+        <!-- Campos simples con valores por defecto (D-05) -->
+        <div class="form-group">
+          <label for="field-mileage" data-i18n="estimer.form.mileage">Kilométrage</label>
+          <input id="field-mileage" name="mileage" type="number" min="1"
+                 inputmode="numeric" placeholder="ex: 85000"
+                 autocomplete="off">
+          <span class="field-error" id="mileage-error" hidden
+                data-i18n="estimer.form.mileage.error">
+            Veuillez entrer un kilométrage valide (&gt; 0)
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="field-condition" data-i18n="estimer.form.condition">État</label>
+          <select id="field-condition" name="condition">
+            <option value="excellent" data-i18n="estimer.condition.excellent">Excellent</option>
+            <option value="bon" selected data-i18n="estimer.condition.bon">Bon</option>
+            <option value="moyen" data-i18n="estimer.condition.moyen">Moyen</option>
+            <option value="mauvais" data-i18n="estimer.condition.mauvais">Mauvais</option>
+            <option value="accidente" data-i18n="estimer.condition.accidente">Accidenté</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="field-fuel" data-i18n="estimer.form.fuel">Carburant</label>
+          <select id="field-fuel" name="fuel">
+            <option value="diesel" selected data-i18n="estimer.fuel.diesel">Diesel</option>
+            <option value="essence" data-i18n="estimer.fuel.essence">Essence</option>
+            <option value="hybride" data-i18n="estimer.fuel.hybride">Hybride</option>
+            <option value="electrique" data-i18n="estimer.fuel.electrique">Électrique</option>
+            <option value="gpl" data-i18n="estimer.fuel.gpl">GPL</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="field-transmission" data-i18n="estimer.form.transmission">Transmission</label>
+          <select id="field-transmission" name="transmission">
+            <option value="manuelle" selected data-i18n="estimer.transmission.manuelle">Manuelle</option>
+            <option value="automatique" data-i18n="estimer.transmission.automatique">Automatique</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="field-city" data-i18n="estimer.form.city">Ville</label>
+          <select id="field-city" name="city">
+            <option value="Casablanca" selected data-i18n="estimer.city.casablanca">Casablanca</option>
+            <option value="Rabat"      data-i18n="estimer.city.rabat">Rabat</option>
+            <option value="Marrakech"  data-i18n="estimer.city.marrakech">Marrakech</option>
+            <option value="Tanger"     data-i18n="estimer.city.tanger">Tanger</option>
+            <option value="Agadir"     data-i18n="estimer.city.agadir">Agadir</option>
+            <option value="Fes"        data-i18n="estimer.city.fes">Fès</option>
+            <option value="Meknes"     data-i18n="estimer.city.meknes">Meknès</option>
+            <option value="Tetouan"    data-i18n="estimer.city.tetouan">Tétouan</option>
+            <option value="Oujda"      data-i18n="estimer.city.oujda">Oujda</option>
+            <option value="Autres"     data-i18n="estimer.city.autres">Autres</option>
+          </select>
+        </div>
+
+        <!-- Botón submit — disabled hasta que marca/modelo/año tengan valor (D-05) -->
+        <button type="submit" id="btn-estimer" class="btn-primary" disabled
+                data-i18n="estimer.form.submit">
+          Estimer
+        </button>
+
+      </form>
+
+      <!-- SECCIÓN DE RESULTADO — oculta inicialmente; contenido añadido en planes 04-02 a 04-05 -->
+      <div id="result-section" class="result-section" hidden></div>
     </section>
 
     <!-- PÁGINA: Historique -->
@@ -1325,6 +1418,131 @@
       }
     };
 
+    // ===============================================================
+    // ESTIMER FORM — Formulario de valoración
+    // Cascada: marca → modelo → año desde CAR_DB
+    // Submit handler se añade en plan 04-02
+    // ===============================================================
+    var EstimerForm = {
+
+      /**
+       * Poblar el select de marcas con las claves de CAR_DB (ordenadas).
+       * Llamado una vez al init.
+       */
+      _populateMakes: function() {
+        var makeSelect = document.getElementById('field-make');
+        if (!makeSelect) return;
+        // Conservar la option vacía inicial (primer hijo)
+        var placeholder = makeSelect.querySelector('option[value=""]');
+        makeSelect.innerHTML = '';
+        if (placeholder) makeSelect.appendChild(placeholder);
+        Object.keys(CAR_DB).sort().forEach(function(make) {
+          var opt = document.createElement('option');
+          opt.value = make;
+          opt.textContent = make;
+          makeSelect.appendChild(opt);
+        });
+      },
+
+      /**
+       * Poblar el select de modelos para una marca dada.
+       * Si make es vacío/nulo, deshabilita el select y limpia las opciones.
+       * @param {string} make
+       */
+      _populateModels: function(make) {
+        var modelSelect = document.getElementById('field-model');
+        if (!modelSelect) return;
+        var placeholder = modelSelect.querySelector('option[value=""]');
+        modelSelect.innerHTML = '';
+        if (placeholder) modelSelect.appendChild(placeholder);
+        modelSelect.disabled = !make;
+        modelSelect.value = '';
+        if (!make || !CAR_DB[make]) return;
+        Object.keys(CAR_DB[make]).sort().forEach(function(model) {
+          var opt = document.createElement('option');
+          opt.value = model;
+          opt.textContent = model;
+          modelSelect.appendChild(opt);
+        });
+      },
+
+      /**
+       * Poblar el select de años para marca+modelo dados.
+       * Orden descendente: año más reciente primero.
+       * Si make o model están vacíos, deshabilita el select.
+       * @param {string} make
+       * @param {string} model
+       */
+      _populateYears: function(make, model) {
+        var yearSelect = document.getElementById('field-year');
+        if (!yearSelect) return;
+        var placeholder = yearSelect.querySelector('option[value=""]');
+        yearSelect.innerHTML = '';
+        if (placeholder) yearSelect.appendChild(placeholder);
+        yearSelect.disabled = !(make && model);
+        yearSelect.value = '';
+        if (!make || !model || !CAR_DB[make] || !CAR_DB[make][model]) return;
+        var range = CAR_DB[make][model].years; // [minYear, maxYear]
+        for (var y = range[1]; y >= range[0]; y--) {
+          var opt = document.createElement('option');
+          opt.value = String(y);
+          opt.textContent = String(y);
+          yearSelect.appendChild(opt);
+        }
+      },
+
+      /**
+       * Recalcular el estado del botón submit.
+       * Disabled si marca, modelo o año están sin seleccionar.
+       */
+      _updateSubmitState: function() {
+        var make  = document.getElementById('field-make').value;
+        var model = document.getElementById('field-model').value;
+        var year  = document.getElementById('field-year').value;
+        var btn   = document.getElementById('btn-estimer');
+        if (btn) btn.disabled = !(make && model && year);
+      },
+
+      /**
+       * Inicializar el formulario: poblar marcas, conectar listeners de cascada.
+       * Llamado desde DOMContentLoaded.
+       */
+      init: function() {
+        EstimerForm._populateMakes();
+
+        var makeSelect  = document.getElementById('field-make');
+        var modelSelect = document.getElementById('field-model');
+
+        if (makeSelect) {
+          makeSelect.addEventListener('change', function() {
+            var make = makeSelect.value;
+            EstimerForm._populateModels(make);
+            EstimerForm._populateYears('', '');
+            EstimerForm._updateSubmitState();
+          });
+        }
+
+        if (modelSelect) {
+          modelSelect.addEventListener('change', function() {
+            var make  = document.getElementById('field-make').value;
+            var model = modelSelect.value;
+            EstimerForm._populateYears(make, model);
+            EstimerForm._updateSubmitState();
+          });
+        }
+
+        var yearSelect = document.getElementById('field-year');
+        if (yearSelect) {
+          yearSelect.addEventListener('change', function() {
+            EstimerForm._updateSubmitState();
+          });
+        }
+
+        // Estado inicial del botón (disabled por defecto, ya está en HTML)
+        EstimerForm._updateSubmitState();
+      }
+    };
+
     // ═══════════════════════════════════════════════════════════
     // ROUTER — Hash-based SPA navigation
     // Cada página es una <section class="page" id="page-X">.
@@ -1404,7 +1622,8 @@
     document.addEventListener('DOMContentLoaded', function() {
       I18n.init();
       Router.init();
-      console.log('AutoValeur MA — i18n + Router inicializados');
+      EstimerForm.init();
+      console.log('AutoValeur MA — i18n + Router + EstimerForm inicializados');
     });
 
     // ═══════════════════════════════════════════════════════════
