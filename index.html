@@ -1543,6 +1543,58 @@
       }
     };
 
+    // ===============================================================
+    // HISTORY — Historial de valoraciones en localStorage
+    // Fase 4: save() + getAll(). Fase 5 extiende con delete() y clear().
+    // Clave localStorage: 'autoValeur_history'
+    // ===============================================================
+    var History = {
+      _KEY: 'autoValeur_history',
+
+      /**
+       * Guardar una nueva entrada en el historial.
+       * Genera id único via Date.now().
+       * @param {object} entry - datos de la valoración (todos los campos, sin id ni date)
+       */
+      save: function(entry) {
+        var all = History.getAll();
+        var record = {
+          id:              Date.now(),
+          make:            entry.make,
+          model:           entry.model,
+          year:            entry.year,
+          mileage:         entry.mileage,
+          condition:       entry.condition,
+          fuel:            entry.fuel,
+          transmission:    entry.transmission,
+          city:            entry.city,
+          estimated_price: entry.estimated_price,
+          price_range:     entry.price_range,
+          breakdown:       entry.breakdown,
+          date:            new Date().toISOString()
+        };
+        all.unshift(record);
+        try {
+          localStorage.setItem(History._KEY, JSON.stringify(all));
+        } catch (e) {
+          console.warn('AutoValeur — no se pudo guardar en historial:', e.message);
+        }
+      },
+
+      /**
+       * Obtener todas las entradas del historial.
+       * Retorna [] si no hay datos o si el JSON está corrompido.
+       */
+      getAll: function() {
+        try {
+          var raw = localStorage.getItem(History._KEY);
+          return raw ? JSON.parse(raw) : [];
+        } catch (e) {
+          return [];
+        }
+      }
+    };
+
     // ═══════════════════════════════════════════════════════════
     // ROUTER — Hash-based SPA navigation
     // Cada página es una <section class="page" id="page-X">.
