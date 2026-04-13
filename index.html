@@ -1822,6 +1822,37 @@
         document.getElementById('page-estimer').scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
 
+      // ── TABLA DE DESGLOSE — mapeo índice → clave i18n ──────────────
+      var BREAKDOWN_KEYS = [
+        'result.breakdown.base',          // [0] Prix de base (siempre neutro)
+        'result.breakdown.age',           // [1] Âge
+        'result.breakdown.km',            // [2] Kilométrage
+        'result.breakdown.condition',     // [3] État
+        'result.breakdown.fuel',          // [4] Carburant
+        'result.breakdown.city',          // [5] Ville
+        'result.breakdown.transmission'   // [6] Transmission
+      ];
+
+      function renderBreakdown(breakdown) {
+        var tbody = document.getElementById('breakdown-body');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        breakdown.forEach(function(row, i) {
+          var tr = document.createElement('tr');
+          // Determinar clase de color (D-10): primera fila siempre neutra
+          var factorClass = 'factor-neutral';
+          if (i > 0) {
+            if (row.factor > 1.0)       factorClass = 'factor-up';
+            else if (row.factor < 1.0)  factorClass = 'factor-down';
+          }
+          tr.innerHTML =
+            '<td>' + I18n.t(BREAKDOWN_KEYS[i]) + '</td>' +
+            '<td class="' + factorClass + '">\u00d7' + row.factor.toFixed(2) + '</td>' +
+            '<td class="' + factorClass + '">' + formatPrice(row.amount_dh, I18n.currentLang) + '</td>';
+          tbody.appendChild(tr);
+        });
+      }
+
       console.log('AutoValeur MA — i18n + Router + EstimerForm inicializados');
     });
 
