@@ -756,7 +756,23 @@
       </form>
 
       <!-- SECCIÓN DE RESULTADO — oculta inicialmente; contenido añadido en planes 04-02 a 04-05 -->
-      <div id="result-section" class="result-section" hidden></div>
+      <div id="result-section" class="result-section" hidden>
+
+        <!-- precio principal -->
+        <div class="result-price-card card">
+          <p class="result-label" data-i18n="result.estimated">Prix estimé</p>
+          <p class="result-price" id="result-price"></p>
+          <p class="result-range" id="result-range"></p>
+        </div>
+
+        <!-- tabla de desglose: PENDIENTE — lo añade Plan 04-04 -->
+        <!-- chips de marketplaces: PENDIENTE — lo añade Plan 04-05 -->
+
+        <button id="btn-new-estimate" class="btn-secondary" data-i18n="result.new_estimate">
+          Nouvelle estimation
+        </button>
+
+      </div>
     </section>
 
     <!-- PÁGINA: Historique -->
