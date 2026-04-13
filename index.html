@@ -448,6 +448,204 @@
       background: rgba(26, 115, 232, 0.06);
     }
 
+    /* ── FORMULARIO ESTIMER ─────────────────────────────────────── */
+    .form-group {
+      margin-bottom: var(--sp-md);
+    }
+
+    .form-group label {
+      display: block;
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: var(--sp-xs);
+    }
+
+    .form-group select,
+    .form-group input[type="number"] {
+      width: 100%;
+      padding: 0.75rem var(--sp-md);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      font-size: var(--font-size-base);
+      font-family: inherit;
+      color: var(--text);
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235f6368' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right var(--sp-md) center;
+      background-size: 12px;
+      transition: border-color var(--transition-fast);
+    }
+
+    [dir="rtl"] .form-group select,
+    [dir="rtl"] .form-group input[type="number"] {
+      background-position: left var(--sp-md) center;
+      padding-inline-start: var(--sp-md);
+      padding-inline-end: calc(var(--sp-md) + 20px);
+    }
+
+    .form-group select:focus,
+    .form-group input[type="number"]:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .form-group select:disabled {
+      background-color: var(--surface-3);
+      color: var(--text-muted);
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .form-group input[type="number"]::-webkit-outer-spin-button,
+    .form-group input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .form-group input[type="number"] {
+      -moz-appearance: textfield;
+    }
+
+    .field-error {
+      display: block;
+      color: var(--danger);
+      font-size: var(--font-size-sm);
+      margin-top: var(--sp-xs);
+    }
+
+    #estimer-form {
+      padding-bottom: var(--sp-lg);
+    }
+
+    #btn-estimer:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    /* ── RESULTADO (definir clases aquí; visibilidad en plan 04-03) ── */
+    .result-section {
+      margin-top: var(--sp-xl);
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity var(--transition-normal), transform var(--transition-normal);
+    }
+
+    .result-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .result-price-card {
+      text-align: center;
+      padding: var(--sp-xl) var(--sp-md);
+      margin-bottom: var(--sp-md);
+    }
+
+    .result-label {
+      font-size: var(--font-size-sm);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--sp-sm);
+    }
+
+    .result-price {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .result-range {
+      font-size: var(--font-size-base);
+      color: var(--text-muted);
+      margin-top: var(--sp-sm);
+    }
+
+    /* ── TABLA DE DESGLOSE ──────────────────────────────────────── */
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--font-size-sm);
+    }
+
+    .breakdown-table th {
+      text-align: start;
+      color: var(--text-muted);
+      font-weight: 600;
+      padding: var(--sp-xs) var(--sp-sm);
+      border-bottom: 2px solid var(--border);
+    }
+
+    .breakdown-table td {
+      padding: var(--sp-sm);
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    .breakdown-table tr:last-child td {
+      border-bottom: none;
+      font-weight: 700;
+    }
+
+    .factor-up {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .factor-down {
+      color: var(--danger);
+      font-weight: 600;
+    }
+
+    .factor-neutral {
+      color: var(--text-muted);
+    }
+
+    /* ── MARKETPLACE CHIPS ──────────────────────────────────────── */
+    .marketplace-section {
+      margin-top: var(--sp-lg);
+      margin-bottom: var(--sp-lg);
+    }
+
+    .marketplace-label {
+      font-size: var(--font-size-sm);
+      color: var(--text-muted);
+      margin-bottom: var(--sp-sm);
+    }
+
+    .marketplace-chips {
+      display: flex;
+      gap: var(--sp-sm);
+      flex-wrap: wrap;
+    }
+
+    .marketplace-chip {
+      flex: 1;
+      min-width: 80px;
+      text-align: center;
+      padding: var(--sp-sm) var(--sp-md);
+      background: var(--surface-3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      color: var(--primary);
+      text-decoration: none;
+      transition: background var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    .marketplace-chip:hover,
+    .marketplace-chip:focus {
+      background: rgba(26, 115, 232, 0.08);
+      border-color: var(--primary);
+    }
+
   </style>
 </head>
 <body>
