@@ -1,7 +1,8 @@
 ---
 phase: 6
 slug: pulido-y-despliegue
-status: draft
+status: approved
+reviewed_at: 2026-04-16
 shadcn_initialized: false
 preset: none
 created: 2026-04-16
@@ -51,17 +52,24 @@ Excepción documentada: `scroll-padding-bottom: 200px` en `html` (línea 104) �
 
 ## Typography
 
-Tokens ya declarados en `index.html` `:root` (líneas 69-73). Esta fase los audita y los asigna a roles concretos.
+Tokens declarados en `index.html` `:root` (líneas 69-73). Esta fase los audita y los asigna a roles concretos.
+
+**Escala final — 4 tamaños, 2 pesos:**
 
 | Role | Token CSS | Size | Weight | Line Height | Uso concreto |
 |------|-----------|------|--------|-------------|-------------|
-| Body | `--font-size-base` | 16px | 400 (regular) | 1.5 | Texto de párrafos, opciones de select, copy de errores en plan 06-03 |
 | Label / Meta | `--font-size-sm` | 14px | 400 (regular) | 1.4 | Labels de formulario, fecha relativa, texto `--text-muted`; mensajes de error inline |
-| Card heading | `--font-size-lg` | 18px | 600 (semibold) | 1.2 | Títulos de tarjeta; headings de estados vacíos |
+| Body + Card heading | `--font-size-base` | 16px | 400 body / 600 card heading | 1.5 body / 1.2 card heading | Párrafos, opciones de select, copy de errores; títulos de tarjeta y headings de estados vacíos en semibold |
 | Price / Display | `--font-size-2xl` | 24px | 600 (semibold) | 1.1 | Precios en tarjetas de historial y Comparer |
-| Price hero | `2.5rem` (40px) | 800 (extrabold) | 1.1 | `.result-price` — precio principal en página Estimer (sin token propio; auditar que no se regrese) |
+| Price hero | `--font-size-hero` | 40px (2.5rem) | 600 (semibold) | 1.1 | `.result-price` — precio principal en página Estimer |
 
-Pesos en uso: 400 (regular), 600 (semibold), 700 (bold en `h2`/`.app-title`), 800 (extrabold en `.result-price`). No se añaden pesos adicionales en esta fase.
+**Pesos permitidos: únicamente 400 (regular) y 600 (semibold).** No se usan 700 ni 800 en ningún elemento.
+
+Cambios de auditoría que aplica el plan 06-01:
+- `h2` y `.app-title`: cambiar `font-weight: 700` → `font-weight: 600`
+- `.result-price`: cambiar `font-weight: 800` → `font-weight: 600` (el tamaño 40px provee la jerarquía visual sin necesitar extrabold)
+- Eliminar toda referencia a `--font-size-lg` (18px) del CSS; los card headings usan `--font-size-base` + `font-weight: 600`
+- Añadir token `--font-size-hero: 2.5rem` en `:root` y usarlo en `.result-price`
 
 **Criterio de auditoría:** Verificar que en Chrome Android 360px y Safari iOS 375px ningún texto queda cortado (overflow) ni superpuesto a la nav inferior fija.
 
@@ -100,7 +108,7 @@ Componentes existentes que se **auditan** en plan 06-01 (no rediseñar; solo cor
 | Tarjeta historial | `.history-card` | 360px | Precio truncado si marca+modelo+año es largo |
 | Banner iOS | `.ios-install-banner` | 375px Safari | Solapamiento con nav inferior en iPhone SE |
 | Comparer grid | `.compare-grid` | 360px | Flex-wrap: confirmar que cada `.compare-card` tiene `min-width: 140px` |
-| Resultado precio | `.result-price` (2.5rem) | 360px | Overflow en precios > 6 dígitos (ej: 1.000.000 DH) |
+| Resultado precio | `.result-price` (40px via `--font-size-hero`) | 360px | Overflow en precios > 6 dígitos (ej: 1.000.000 DH) |
 
 Componentes **nuevos a crear** en plan 06-03 (mensajes de error):
 
@@ -284,3 +292,4 @@ Excepción de herramienta de despliegue (plan 06-04/06-05): `html-minifier-terse
 | `ROADMAP.md` Phase 6 | 4 — criterios de éxito Lighthouse ≥ 90, Chrome Android 360px, Safari iOS 375px, offline PWA |
 | `REQUIREMENTS.md` PWA-01 a PWA-05 | 5 — offline-first, instalable Android, instrucciones iOS, responsive 360px+ |
 | User input (esta sesión) | 0 — todo pre-poblado desde upstream |
+| UI Checker revision (2026-04-16) | 2 — tipografía reducida a 4 tamaños y 2 pesos conforme a contrato |
