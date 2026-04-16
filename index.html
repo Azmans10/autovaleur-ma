@@ -2196,6 +2196,23 @@
     // ═══════════════════════════════════════════════════════════
     // MÓDULO: Comparer — comparación lado a lado de 2 estimaciones
     // ═══════════════════════════════════════════════════════════
+
+    // === Función: determinar ganador por ratio precio/km ===
+    function determineWinner(entryA, entryB) {
+      // Si alguno tiene mileage === 0: gana el de precio menor
+      if (entryA.mileage === 0 || entryB.mileage === 0) {
+        if (entryA.estimated_price < entryB.estimated_price) return entryA;
+        if (entryB.estimated_price < entryA.estimated_price) return entryB;
+        return null; // empate
+      }
+      // Ratio precio/km — menor es mejor
+      var ratioA = entryA.estimated_price / entryA.mileage;
+      var ratioB = entryB.estimated_price / entryB.mileage;
+      if (ratioA < ratioB) return entryA;
+      if (ratioB < ratioA) return entryB;
+      return null; // empate
+    }
+
     var Comparer = {
       init: function() {
         // Botón CTA del estado vacío
@@ -2314,45 +2331,69 @@
       },
 
       renderComparison: function(entryA, entryB) {
-        // La lógica de barras y ganador se implementa en 05-05
-        // En este plan: renderizar el layout base de las dos tarjetas sin barras ni ganador
         var resultDiv = document.getElementById('comparer-result');
         if (!resultDiv) return;
 
         // Limpiar resultado anterior
         resultDiv.innerHTML = '';
 
+        // Calcular barras proporcionales
+        var maxPrice = Math.max(entryA.estimated_price, entryB.estimated_price);
+        var widthA = maxPrice > 0 ? (entryA.estimated_price / maxPrice * 100).toFixed(2) : 0;
+        var widthB = maxPrice > 0 ? (entryB.estimated_price / maxPrice * 100).toFixed(2) : 0;
+
+        // Determinar ganador
+        var winner = determineWinner(entryA, entryB);
+
         var grid = document.createElement('div');
         grid.className = 'compare-grid';
 
-        [entryA, entryB].forEach(function(entry, index) {
+        [[entryA, widthA], [entryB, widthB]].forEach(function(pair, index) {
+          var entry = pair[0];
+          var barWidth = pair[1];
+          var isWinner = winner && winner.id === entry.id;
+
           var card = document.createElement('div');
-          card.className = 'compare-card';
+          card.className = isWinner ? 'compare-card compare-winner' : 'compare-card';
           card.dataset.entryId = entry.id;
 
+          // Badge "Meilleur rapport" — solo para el ganador
+          if (isWinner) {
+            var badge = document.createElement('span');
+            badge.className = 'badge';
+            badge.textContent = I18n.t('comparer.winner_badge');
+            card.appendChild(badge);
+          }
+
+          // Label A / B
           var label = document.createElement('p');
           label.className = 'compare-card__label';
           label.textContent = index === 0 ? 'A' : 'B';
 
+          // Título: Marca Modelo Año (textContent — XSS prevention)
           var title = document.createElement('p');
           title.className = 'compare-card__title';
           title.textContent = entry.make + ' ' + entry.model + ' ' + entry.year;
 
+          // Precio destacado
           var price = document.createElement('p');
           price.className = 'compare-card__price';
           price.textContent = formatPrice(entry.estimated_price, I18n.currentLang);
 
+          // Meta: km
           var meta = document.createElement('p');
           meta.className = 'compare-card__meta';
           meta.textContent = new Intl.NumberFormat('fr-FR').format(entry.mileage) + ' km';
 
-          // Placeholder para barra de precio (llenado en 05-05)
+          // Barra de precio proporcional
           var barTrack = document.createElement('div');
           barTrack.className = 'compare-bar-track';
+
           var bar = document.createElement('div');
           bar.className = 'compare-bar';
-          bar.dataset.price = entry.estimated_price;
-          bar.style.width = '0%';  // Se calculará en 05-05
+          // Forzar reflow para que la animación CSS (transition) se dispare correctamente
+          // Primero width: 0%, luego en el siguiente frame el width real
+          bar.style.width = '0%';
           barTrack.appendChild(bar);
 
           card.appendChild(label);
@@ -2361,6 +2402,13 @@
           card.appendChild(meta);
           card.appendChild(barTrack);
           grid.appendChild(card);
+
+          // Animar la barra al frame siguiente (permite que la transición CSS se active)
+          (function(b, w) {
+            requestAnimationFrame(function() {
+              b.style.width = w + '%';
+            });
+          })(bar, barWidth);
         });
 
         resultDiv.appendChild(grid);
