@@ -400,6 +400,97 @@
       border: 1px solid var(--border);
     }
 
+    /* === Historia — tarjetas === */
+    .history-card {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-xs);
+      padding: var(--sp-md);
+      margin-block-end: var(--sp-sm);
+      position: relative;
+    }
+
+    .history-card__header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--sp-sm);
+    }
+
+    .history-card__title {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--text);
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .history-card__price {
+      font-size: var(--font-size-2xl);
+      font-weight: 600;
+      color: var(--primary);
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    .history-card__meta {
+      font-size: var(--font-size-sm);
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .btn-delete {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: var(--font-size-lg);
+      padding: var(--sp-sm);
+      line-height: 1;
+      min-width: 44px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      margin-inline-start: auto;
+      flex-shrink: 0;
+    }
+
+    .btn-delete:hover {
+      background: var(--surface-3);
+      color: var(--danger);
+    }
+
+    .btn-outline-sm {
+      background: none;
+      border: 1.5px solid var(--primary);
+      color: var(--primary);
+      padding: var(--sp-xs) var(--sp-sm);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: var(--font-size-sm);
+      font-family: inherit;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn-outline-sm:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+      border: 1.5px solid var(--danger);
+      padding: var(--sp-xs) var(--sp-sm);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: var(--font-size-sm);
+      font-family: inherit;
+    }
+
     /* Botón primario base */
     .btn-primary {
       display: inline-flex;
@@ -800,9 +891,25 @@
     </section>
 
     <!-- PÁGINA: Historique -->
-    <section id="page-historique" class="page page-historique" hidden>
-      <h2 data-i18n="page.historique.title">Historique</h2>
-      <p>Historique des estimations — <em>Phase 5</em></p>
+    <section id="page-historique" class="page" hidden>
+      <!-- Cabecera con título y botón Effacer tout -->
+      <div class="page-header" style="display:flex; align-items:center; justify-content:space-between; margin-block-end: var(--sp-md);">
+        <h1 class="page-title" style="font-size: var(--font-size-lg); font-weight:600; margin:0;" data-i18n="nav.historique"></h1>
+        <button id="btn-clear-history" class="btn-outline-sm" data-i18n="historique.clear" hidden></button>
+      </div>
+
+      <!-- Estado vacío (visible cuando historial vacío) -->
+      <div id="history-empty" class="empty-state" hidden>
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <circle cx="32" cy="32" r="28" stroke="var(--border)" stroke-width="2"/>
+          <path d="M20 32h24M32 20v24" stroke="var(--border)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <p data-i18n="historique.empty" style="color: var(--text-muted); margin-block: var(--sp-md);"></p>
+        <button class="btn-primary" id="btn-history-cta" data-i18n="nav.estimer"></button>
+      </div>
+
+      <!-- Lista de tarjetas del historial -->
+      <div id="history-list" role="list" hidden></div>
     </section>
 
     <!-- PÁGINA: Comparer -->
@@ -1816,6 +1923,103 @@
     };
 
     // ═══════════════════════════════════════════════════════════
+    // UTILIDAD: Fecha relativa
+    // ═══════════════════════════════════════════════════════════
+    function formatRelativeDate(isoString) {
+      var days = Math.floor((Date.now() - new Date(isoString).getTime()) / 86400000);
+      if (days === 0) return I18n.t('date.today');
+      if (days < 7)  return I18n.t('date.days_ago').replace('{n}', days);
+      var weeks = Math.floor(days / 7);
+      return I18n.t('date.weeks_ago').replace('{n}', weeks);
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // MÓDULO: Historique — renderizado y gestión de la página
+    // ═══════════════════════════════════════════════════════════
+    var Historique = {
+      init: function() {
+        // Botón CTA del empty state
+        var ctaBtn = document.getElementById('btn-history-cta');
+        if (ctaBtn) {
+          ctaBtn.addEventListener('click', function() {
+            Router.navigate('estimer');
+          });
+        }
+        // Renderizado inicial
+        Historique.render();
+      },
+
+      render: function() {
+        var entries = History.getAll();
+        var container = document.getElementById('history-list');
+        var emptyState = document.getElementById('history-empty');
+        var clearBtn = document.getElementById('btn-clear-history');
+
+        if (!container) return;
+
+        // Limpiar contenedor (sin datos de usuario en innerHTML — seguro)
+        container.innerHTML = '';
+
+        if (entries.length === 0) {
+          emptyState.hidden = false;
+          container.hidden = true;
+          if (clearBtn) clearBtn.hidden = true;
+          return;
+        }
+
+        emptyState.hidden = true;
+        container.hidden = false;
+        if (clearBtn) clearBtn.hidden = false;
+
+        entries.forEach(function(entry) {
+          var card = document.createElement('div');
+          card.className = 'history-card card';
+          card.setAttribute('role', 'listitem');
+
+          // Header: título + botón eliminar
+          var header = document.createElement('div');
+          header.className = 'history-card__header';
+
+          // Título: Marca Modelo Año (textContent — XSS prevention)
+          var title = document.createElement('p');
+          title.className = 'history-card__title';
+          title.textContent = entry.make + ' ' + entry.model + ' ' + entry.year;
+
+          // Botón eliminar ×
+          var deleteBtn = document.createElement('button');
+          deleteBtn.className = 'btn-delete';
+          deleteBtn.setAttribute('aria-label', I18n.t('historique.delete'));
+          deleteBtn.textContent = '×';
+          deleteBtn.dataset.id = entry.id;
+          deleteBtn.addEventListener('click', function() {
+            History.remove(Number(this.dataset.id));
+            Historique.render();
+          });
+
+          header.appendChild(title);
+          header.appendChild(deleteBtn);
+
+          // Precio destacado
+          var price = document.createElement('p');
+          price.className = 'history-card__price';
+          price.textContent = formatPrice(entry.estimated_price, I18n.currentLang);
+
+          // Meta: km + fecha relativa
+          var meta = document.createElement('p');
+          meta.className = 'history-card__meta';
+          var kmText = new Intl.NumberFormat('fr-FR').format(entry.mileage) + ' km';
+          var dateText = formatRelativeDate(entry.date);
+          meta.textContent = kmText + ' · ' + dateText;
+
+          card.appendChild(header);
+          card.appendChild(price);
+          card.appendChild(meta);
+          container.appendChild(card);
+        });
+      }
+    };
+
+    // ═══════════════════════════════════════════════════════════
     // ROUTER — Hash-based SPA navigation
     // Cada página es una <section class="page" id="page-X">.
     // La navegación usa location.hash; el botón Atrás funciona
@@ -1874,6 +2078,8 @@
         // Escuchar cambios de hash (botón Atrás incluido)
         window.addEventListener('hashchange', function() {
           Router._show();
+          // Re-render Historique al navegar a esa página
+          if (typeof Historique !== 'undefined') Historique.render();
         });
 
         // Conectar botones de la nav inferior
@@ -1895,6 +2101,7 @@
       I18n.init();
       Router.init();
       EstimerForm.init();
+      Historique.init();
 
       // ── SUBMIT HANDLER — Formulario Estimer ─────────────────────────
       document.getElementById('estimer-form').addEventListener('submit', function(e) {
