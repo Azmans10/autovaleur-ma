@@ -739,6 +739,84 @@
       border-color: var(--primary);
     }
 
+    /* === Comparer === */
+    .compare-grid {
+      display: flex;
+      gap: var(--sp-md);
+      margin-block-start: var(--sp-xl);
+      flex-wrap: wrap;
+    }
+
+    .compare-card {
+      flex: 1;
+      min-width: 140px;
+      padding: var(--sp-md);
+      position: relative;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--border);
+      background: var(--surface);
+    }
+
+    .compare-winner {
+      border-color: var(--accent);
+    }
+
+    .compare-card__label {
+      font-size: var(--font-size-sm);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-block-end: var(--sp-xs);
+    }
+
+    .compare-card__title {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--text);
+      margin-block-end: var(--sp-xs);
+    }
+
+    .compare-card__price {
+      font-size: var(--font-size-2xl);
+      font-weight: 600;
+      color: var(--primary);
+      margin-block-end: var(--sp-sm);
+    }
+
+    .compare-card__meta {
+      font-size: var(--font-size-sm);
+      color: var(--text-muted);
+      margin-block-end: var(--sp-sm);
+    }
+
+    .compare-bar-track {
+      background: var(--surface-3);
+      border-radius: var(--radius-sm);
+      height: 12px;
+      overflow: hidden;
+      margin-block: var(--sp-xs);
+    }
+
+    .compare-bar {
+      height: 100%;
+      background: var(--primary);
+      border-radius: var(--radius-sm);
+      transition: width 0.3s ease;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      font-size: 11px;
+      font-weight: 600;
+      padding: var(--sp-xs) var(--sp-sm);
+      border-radius: var(--radius-lg);
+      position: absolute;
+      top: var(--sp-sm);
+      inset-inline-end: var(--sp-sm);
+    }
+
   </style>
 </head>
 <body>
@@ -915,9 +993,42 @@
     </section>
 
     <!-- PÁGINA: Comparer -->
-    <section id="page-comparer" class="page page-comparer" hidden>
-      <h2 data-i18n="page.comparer.title">Comparer</h2>
-      <p>Comparer deux estimations — <em>Phase 5</em></p>
+    <section id="page-comparer" class="page" hidden>
+      <!-- Título de página -->
+      <h1 class="page-title" style="font-size: var(--font-size-lg); font-weight:600; margin-block-end: var(--sp-md);" data-i18n="nav.comparer"></h1>
+
+      <!-- Estado vacío: visible cuando historial tiene < 2 entradas -->
+      <div id="comparer-empty" class="empty-state" hidden>
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden="true" style="opacity:0.4;">
+          <rect x="8" y="12" width="20" height="40" rx="3" stroke="var(--text-muted)" stroke-width="2"/>
+          <rect x="36" y="12" width="20" height="40" rx="3" stroke="var(--text-muted)" stroke-width="2"/>
+          <line x1="28" y1="32" x2="36" y2="32" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <p data-i18n="comparer.empty" style="font-size: var(--font-size-lg); font-weight:600; margin-block: var(--sp-sm) 0;"></p>
+        <p data-i18n="comparer.empty_body" style="color: var(--text-muted); margin-block: var(--sp-sm) var(--sp-md);"></p>
+        <button class="btn-primary" id="btn-comparer-cta" data-i18n="nav.estimer"></button>
+      </div>
+
+      <!-- Sección de selects: visible cuando hay >= 2 entradas -->
+      <div id="comparer-controls" hidden>
+        <div style="display:flex; gap: var(--sp-md); margin-block-end: var(--sp-md); flex-wrap:wrap;">
+          <div class="form-group" style="flex:1; min-width:140px;">
+            <label for="select-car-a" data-i18n="comparer.select_a" style="display:block; font-size: var(--font-size-sm); color: var(--text-muted); margin-block-end: var(--sp-xs);"></label>
+            <select id="select-car-a" class="form-control">
+              <option value=""></option>
+            </select>
+          </div>
+          <div class="form-group" style="flex:1; min-width:140px;">
+            <label for="select-car-b" data-i18n="comparer.select_b" style="display:block; font-size: var(--font-size-sm); color: var(--text-muted); margin-block-end: var(--sp-xs);"></label>
+            <select id="select-car-b" class="form-control">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Área de comparación: vacía hasta que ambos selects tienen valor válido y distinto -->
+      <div id="comparer-result"></div>
     </section>
 
   </main>
@@ -2056,6 +2167,180 @@
     };
 
     // ═══════════════════════════════════════════════════════════
+    // MÓDULO: Comparer — comparación lado a lado de 2 estimaciones
+    // ═══════════════════════════════════════════════════════════
+    var Comparer = {
+      init: function() {
+        // Botón CTA del estado vacío
+        var ctaBtn = document.getElementById('btn-comparer-cta');
+        if (ctaBtn) {
+          ctaBtn.addEventListener('click', function() {
+            Router.navigate('estimer');
+          });
+        }
+
+        // Listeners de los selects — renderizado automático
+        var selectA = document.getElementById('select-car-a');
+        var selectB = document.getElementById('select-car-b');
+
+        if (selectA) {
+          selectA.addEventListener('change', function() { Comparer._onSelectChange(); });
+        }
+        if (selectB) {
+          selectB.addEventListener('change', function() { Comparer._onSelectChange(); });
+        }
+
+        // Render inicial
+        Comparer.render();
+      },
+
+      render: function() {
+        var entries = History.getAll();
+        var emptyDiv = document.getElementById('comparer-empty');
+        var controlsDiv = document.getElementById('comparer-controls');
+        var resultDiv = document.getElementById('comparer-result');
+
+        if (!emptyDiv || !controlsDiv) return;
+
+        if (entries.length < 2) {
+          // Menos de 2 valoraciones — mostrar mensaje orientativo
+          emptyDiv.hidden = false;
+          controlsDiv.hidden = true;
+          if (resultDiv) resultDiv.innerHTML = '';
+          return;
+        }
+
+        // 2 o más valoraciones — mostrar selects
+        emptyDiv.hidden = true;
+        controlsDiv.hidden = false;
+
+        // Re-poblar los selects (Pitfall 7 prevenido: siempre re-poblar al render)
+        var selectA = document.getElementById('select-car-a');
+        var selectB = document.getElementById('select-car-b');
+
+        if (!selectA || !selectB) return;
+
+        var prevA = selectA.value;
+        var prevB = selectB.value;
+
+        // Limpiar opciones excepto placeholder
+        selectA.innerHTML = '<option value=""></option>';
+        selectB.innerHTML = '<option value=""></option>';
+
+        entries.forEach(function(entry) {
+          var label = entry.make + ' ' + entry.model + ' ' + entry.year + ' — ' + formatPrice(entry.estimated_price, I18n.currentLang);
+
+          var optA = document.createElement('option');
+          optA.value = entry.id;
+          optA.textContent = label;  // textContent — XSS prevention
+          selectA.appendChild(optA);
+
+          var optB = document.createElement('option');
+          optB.value = entry.id;
+          optB.textContent = label;  // textContent — XSS prevention
+          selectB.appendChild(optB);
+        });
+
+        // Restaurar selecciones previas si los ids siguen válidos
+        if (prevA && selectA.querySelector('option[value="' + prevA + '"]')) {
+          selectA.value = prevA;
+        }
+        if (prevB && selectB.querySelector('option[value="' + prevB + '"]')) {
+          selectB.value = prevB;
+        }
+
+        // Re-renderizar comparación si ambos selects tienen valor válido
+        Comparer._onSelectChange();
+      },
+
+      _onSelectChange: function() {
+        var selectA = document.getElementById('select-car-a');
+        var selectB = document.getElementById('select-car-b');
+        var resultDiv = document.getElementById('comparer-result');
+
+        if (!selectA || !selectB || !resultDiv) return;
+
+        var idA = selectA.value;
+        var idB = selectB.value;
+
+        // Validar: ambos deben tener valor y ser distintos
+        if (!idA || !idB || idA === idB) {
+          resultDiv.innerHTML = '';
+          return;
+        }
+
+        var entries = History.getAll();
+        var entryA = null;
+        var entryB = null;
+
+        entries.forEach(function(e) {
+          if (String(e.id) === String(idA)) entryA = e;
+          if (String(e.id) === String(idB)) entryB = e;
+        });
+
+        if (!entryA || !entryB) {
+          resultDiv.innerHTML = '';
+          return;
+        }
+
+        Comparer.renderComparison(entryA, entryB);
+      },
+
+      renderComparison: function(entryA, entryB) {
+        // La lógica de barras y ganador se implementa en 05-05
+        // En este plan: renderizar el layout base de las dos tarjetas sin barras ni ganador
+        var resultDiv = document.getElementById('comparer-result');
+        if (!resultDiv) return;
+
+        // Limpiar resultado anterior
+        resultDiv.innerHTML = '';
+
+        var grid = document.createElement('div');
+        grid.className = 'compare-grid';
+
+        [entryA, entryB].forEach(function(entry, index) {
+          var card = document.createElement('div');
+          card.className = 'compare-card';
+          card.dataset.entryId = entry.id;
+
+          var label = document.createElement('p');
+          label.className = 'compare-card__label';
+          label.textContent = index === 0 ? 'A' : 'B';
+
+          var title = document.createElement('p');
+          title.className = 'compare-card__title';
+          title.textContent = entry.make + ' ' + entry.model + ' ' + entry.year;
+
+          var price = document.createElement('p');
+          price.className = 'compare-card__price';
+          price.textContent = formatPrice(entry.estimated_price, I18n.currentLang);
+
+          var meta = document.createElement('p');
+          meta.className = 'compare-card__meta';
+          meta.textContent = new Intl.NumberFormat('fr-FR').format(entry.mileage) + ' km';
+
+          // Placeholder para barra de precio (llenado en 05-05)
+          var barTrack = document.createElement('div');
+          barTrack.className = 'compare-bar-track';
+          var bar = document.createElement('div');
+          bar.className = 'compare-bar';
+          bar.dataset.price = entry.estimated_price;
+          bar.style.width = '0%';  // Se calculará en 05-05
+          barTrack.appendChild(bar);
+
+          card.appendChild(label);
+          card.appendChild(title);
+          card.appendChild(price);
+          card.appendChild(meta);
+          card.appendChild(barTrack);
+          grid.appendChild(card);
+        });
+
+        resultDiv.appendChild(grid);
+      }
+    };
+
+    // ═══════════════════════════════════════════════════════════
     // ROUTER — Hash-based SPA navigation
     // Cada página es una <section class="page" id="page-X">.
     // La navegación usa location.hash; el botón Atrás funciona
@@ -2116,6 +2401,10 @@
           Router._show();
           // Re-render Historique al navegar a esa página
           if (typeof Historique !== 'undefined') Historique.render();
+          // Re-render Comparer al navegar a esa página (Pitfall 7 prevenido)
+          if (location.hash === '#comparer') {
+            if (typeof Comparer !== 'undefined') Comparer.render();
+          }
         });
 
         // Conectar botones de la nav inferior
@@ -2138,6 +2427,7 @@
       Router.init();
       EstimerForm.init();
       Historique.init();
+      Comparer.init();
 
       // ── SUBMIT HANDLER — Formulario Estimer ─────────────────────────
       document.getElementById('estimer-form').addEventListener('submit', function(e) {
