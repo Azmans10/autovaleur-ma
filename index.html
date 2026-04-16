@@ -1777,6 +1777,33 @@
       console.log('=== Tests i18n keys Fase 5: OK ===');
     })();
 
+    // === Tests determineWinner (Fase 5) ===
+    (function testDetermineWinner() {
+      console.log('=== Tests determineWinner (Fase 5) ===');
+
+      var a1 = { id: 1, estimated_price: 95000, mileage: 120000 };
+      var b1 = { id: 2, estimated_price: 58500, mileage: 85000 };
+      var w1 = determineWinner(a1, b1);
+      console.assert(w1 && w1.id === 2, 'FAIL: ganador debe ser b1 (ratio 0.688 < 0.791)');
+
+      var a2 = { id: 3, estimated_price: 95000, mileage: 0 };
+      var b2 = { id: 4, estimated_price: 58500, mileage: 85000 };
+      var w2 = determineWinner(a2, b2);
+      console.assert(w2 && w2.id === 4, 'FAIL: mileage=0 → ganador por precio menor (b2)');
+
+      var a3 = { id: 5, estimated_price: 58500, mileage: 85000 };
+      var b3 = { id: 6, estimated_price: 58500, mileage: 85000 };
+      var w3 = determineWinner(a3, b3);
+      console.assert(w3 === null, 'FAIL: empate debe retornar null');
+
+      var a4 = { id: 7, estimated_price: 72000, mileage: 25000 };
+      var b4 = { id: 8, estimated_price: 95000, mileage: 120000 };
+      var w4 = determineWinner(a4, b4);
+      console.assert(w4 && w4.id === 8, 'FAIL: b4 gana (ratio 0.791 < a4 ratio 2.88)');
+
+      console.log('=== Tests determineWinner Fase 5: OK ===');
+    })();
+
     } // end dev-only guard
 
     // ===============================================================
