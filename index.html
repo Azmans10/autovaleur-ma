@@ -900,9 +900,11 @@
 
       <!-- Estado vacío (visible cuando historial vacío) -->
       <div id="history-empty" class="empty-state" hidden>
-        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden="true">
-          <circle cx="32" cy="32" r="28" stroke="var(--border)" stroke-width="2"/>
-          <path d="M20 32h24M32 20v24" stroke="var(--border)" stroke-width="2" stroke-linecap="round"/>
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden="true" style="opacity:0.4;">
+          <rect x="12" y="8" width="40" height="48" rx="4" stroke="var(--text-muted)" stroke-width="2"/>
+          <line x1="20" y1="24" x2="44" y2="24" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round"/>
+          <line x1="20" y1="32" x2="44" y2="32" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round"/>
+          <line x1="20" y1="40" x2="32" y2="40" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round"/>
         </svg>
         <p data-i18n="historique.empty" style="color: var(--text-muted); margin-block: var(--sp-md);"></p>
         <button class="btn-primary" id="btn-history-cta" data-i18n="nav.estimer"></button>
@@ -1945,6 +1947,40 @@
             Router.navigate('estimer');
           });
         }
+        // Botón Effacer tout — flujo 2 pasos con timeout 3s
+        var clearBtn = document.getElementById('btn-clear-history');
+        var clearTimer = null;
+        var clearStep = 0;  // 0 = normal, 1 = esperando confirmación
+
+        if (clearBtn) {
+          clearBtn.addEventListener('click', function() {
+            if (clearStep === 0) {
+              // Paso 1: cambiar a estado "confirmar"
+              clearStep = 1;
+              clearBtn.textContent = I18n.t('historique.confirm_clear');
+              clearBtn.className = 'btn-danger';
+
+              // Timeout 3s: reset automático si no hay segundo clic
+              clearTimer = setTimeout(function() {
+                clearStep = 0;
+                clearBtn.textContent = I18n.t('historique.clear');
+                clearBtn.className = 'btn-outline-sm';
+                clearTimer = null;
+              }, 3000);
+
+            } else if (clearStep === 1) {
+              // Paso 2: confirmar borrado
+              clearTimeout(clearTimer);
+              clearTimer = null;
+              clearStep = 0;
+              History.clear();
+              clearBtn.textContent = I18n.t('historique.clear');
+              clearBtn.className = 'btn-outline-sm';
+              Historique.render();
+            }
+          });
+        }
+
         // Renderizado inicial
         Historique.render();
       },
