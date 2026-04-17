@@ -9,18 +9,18 @@
 
 'use strict';
 
-const CACHE_NAME = 'autovaleur-v1';
+const CACHE_NAME = 'autovaleur-v2';
 
 // Lista de recursos a precachear en el install.
 // Incluir TODOS los archivos de la app para garantizar
 // funcionamiento offline completo desde la primera carga.
 const PRECACHE_URLS = [
-  './',
-  './index.html',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png',
-  './apple-touch-icon.png'
+  '/autovaleur-ma/',
+  '/autovaleur-ma/index.html',
+  '/autovaleur-ma/manifest.json',
+  '/autovaleur-ma/icon-192.png',
+  '/autovaleur-ma/icon-512.png',
+  '/autovaleur-ma/apple-touch-icon.png'
 ];
 
 // ── INSTALL ────────────────────────────────────────────────────
@@ -80,7 +80,7 @@ self.addEventListener('fetch', function(event) {
         return networkResponse;
       }).catch(function() {
         // Red no disponible: servir index.html como fallback
-        return caches.match('./index.html');
+        return caches.match('/autovaleur-ma/index.html');
       });
     })
   );
