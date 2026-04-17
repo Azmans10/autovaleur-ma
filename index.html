@@ -2073,7 +2073,7 @@
         try {
           localStorage.setItem(History._KEY, JSON.stringify(all));
         } catch (e) {
-          console.warn('AutoValeur — no se pudo guardar en historial:', e.message);
+          ErrorUI.showStorageBanner();
         }
       },
 
@@ -2086,6 +2086,7 @@
           var raw = localStorage.getItem(History._KEY);
           return raw ? JSON.parse(raw) : [];
         } catch (e) {
+          History._corrupted = true;
           return [];
         }
       },
@@ -2103,7 +2104,7 @@
         try {
           localStorage.setItem(History._KEY, JSON.stringify(filtered));
         } catch (e) {
-          console.warn('AutoValeur — no se pudo actualizar historial:', e.message);
+          ErrorUI.showStorageBanner();
         }
         return filtered;
       },
@@ -2116,9 +2117,47 @@
         try {
           localStorage.setItem(History._KEY, JSON.stringify([]));
         } catch (e) {
-          console.warn('AutoValeur — no se pudo limpiar historial:', e.message);
+          ErrorUI.showStorageBanner();
         }
         return [];
+      }
+    };
+
+    // ═══════════════════════════════════════════════════════════
+    // MÓDULO: ErrorUI — Manejo de errores visible al usuario
+    // Escenarios: localStorage bloqueado (banner), historial corrompido
+    // (inline en Historique), formulario sin resultado (inline en Estimer).
+    // ═══════════════════════════════════════════════════════════
+    /* -- ErrorUI ------------------------------------------------ */
+    var ErrorUI = {
+      showStorageBanner: function() {
+        var banner = document.getElementById('error-storage-banner');
+        if (banner) {
+          banner.hidden = false;
+          I18n._applyTranslations(); // actualizar las cadenas del banner al idioma actual
+        }
+      },
+      closeBanner: function() {
+        var banner = document.getElementById('error-storage-banner');
+        if (banner) { banner.hidden = true; }
+      },
+      showInline: function(containerId, i18nKey) {
+        var container = document.getElementById(containerId);
+        if (!container) return;
+        // Eliminar error previo si existe
+        var prev = container.querySelector('.error-inline');
+        if (prev) prev.remove();
+        var p = document.createElement('p');
+        p.className = 'error-inline';
+        p.setAttribute('data-i18n', i18nKey);
+        p.textContent = I18n.t(i18nKey);
+        container.appendChild(p);
+      },
+      clearInline: function(containerId) {
+        var container = document.getElementById(containerId);
+        if (!container) return;
+        var prev = container.querySelector('.error-inline');
+        if (prev) prev.remove();
       }
     };
 
@@ -2193,6 +2232,11 @@
 
         // Limpiar contenedor (sin datos de usuario en innerHTML — seguro)
         container.innerHTML = '';
+
+        if (History._corrupted) {
+          ErrorUI.showInline('page-historique', 'error.history.corrupt');
+          History._corrupted = false;
+        }
 
         if (entries.length === 0) {
           emptyState.hidden = false;
@@ -2600,9 +2644,11 @@
           city: city
         });
         if (!result) {
-          console.warn('AutoValeur — Engine.estimate() retornó null para los parámetros dados');
+          ErrorUI.showInline('page-estimer', 'error.form.no_result');
           return;
         }
+        // Si había un error previo, limpiarlo
+        ErrorUI.clearInline('page-estimer');
 
         // 4. Guardar en historial (D-12, EST-06)
         History.save({
