@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Executing Phase 06
-stopped_at: "Completed 06-02: Error UI — banner localStorage + inline errors"
-last_updated: "2026-04-17T21:17:38.153Z"
+stopped_at: "Completed 06-03: PWA paths GitHub Pages — manifest.json y sw.js"
+last_updated: "2026-04-17T21:41:04.532Z"
 progress:
   total_phases: 6
   completed_phases: 5
   total_plans: 30
-  completed_plans: 29
-  percent: 97
+  completed_plans: 30
+  percent: 100
 ---
 
 # Project State — AutoValeur MA
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 **Phase:** 01 — Estructura base, SPA y PWA (Plan 02 of 05 complete)
 **Last action:** Plan 01-02 complete — hash router SPA implementado en index.html
 **Next step:** Execute plan 01-03
-**Stopped at:** Completed 06-02: Error UI — banner localStorage + inline errors
+**Stopped at:** Completed 06-03: PWA paths GitHub Pages — manifest.json y sw.js
 
 ## Phases
 
@@ -54,6 +54,9 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 - [Phase 06-01]: Tap targets banner iOS: min-width/min-height 44px + display:flex en boton de cierre para cumplir PWA-04
 - [Phase 06]: ErrorUI module centraliza todos los errores visibles al usuario (reemplaza console.warn en History)
 - [Phase 06]: History._corrupted flag comunica deteccion de JSON invalido de getAll() a Historique.render() sin acoplamiento directo
+- [Phase 06]: manifest.json y sw.js usan paths absolutos /autovaleur-ma/ para GitHub Pages subpath (D-12, D-13)
+- [Phase 06]: CACHE_NAME autovaleur-v2 fuerza limpieza del cache v1 con paths relativos incorrectos
+- [Phase 06]: index.html de 122 KB no requiere minificacion per D-08 (umbral 400 KB)
 
 ## Performance Metrics
 
@@ -69,3 +72,4 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 | Phase 01 P04 | 8min | 2 tasks | 1 files |
 | Phase 06 P01 | 18min | 3 tasks | 1 files |
 | Phase 06 P02 | 12min | 2 tasks | 1 files |
+| Phase 06 P03 | 8min | 3 tasks | 2 files |
