@@ -119,7 +119,7 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 06-01-PLAN.md — Corrección tipográfica UI-SPEC: eliminar font-weight 700/800, eliminar --font-size-lg, añadir --font-size-hero
+- [x] 06-01-PLAN.md — Corrección tipográfica UI-SPEC: eliminar font-weight 700/800, eliminar --font-size-lg, añadir --font-size-hero
 - [ ] 06-02-PLAN.md — Manejo de errores: ErrorUI module, banner localStorage, inline historial corrompido, inline form sin resultado, cadenas i18n FR/AR
 - [ ] 06-03-PLAN.md — Corrección de paths para GitHub Pages subpath (manifest.json, sw.js), verificación tamaño < 400KB
 - [ ] 06-04-PLAN.md — README.md para usuarios finales + deploy en GitHub Pages (checkpoint humano)
@@ -133,4 +133,4 @@ Plans:
 | 3. Motor de valoración y base de datos | 0/5 | Not started | - |
 | 4. Página Estimer | 0/5 | Not started | - |
 | 5. Historique y Comparer | 0/5 | Not started | - |
-| 6. Pulido y despliegue | 0/4 | Not started | - |
+| 6. Pulido y despliegue | 1/4 | In Progress|  |
