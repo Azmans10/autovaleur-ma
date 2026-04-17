@@ -101,11 +101,11 @@ Plans:
 **Plans**: 5 plans
 
 Plans:
-- [ ] 05-01: Módulo History completo (save, getAll, remove, clear) con localStorage + try/catch
-- [ ] 05-02: Página Historique: lista de tarjetas con marca/modelo/año/km/precio/fecha + botón eliminar por item
-- [ ] 05-03: Botón "Effacer tout" con confirmación + estado vacío con ilustración y CTA
-- [ ] 05-04: Página Comparer: dos selects con el historial, renderizar comparación al seleccionar ambos
-- [ ] 05-05: Barras visuales CSS proporcionales, cálculo ratio precio/km, destacar ganador (borde verde, badge)
+- [x] 05-01: Módulo History completo (save, getAll, remove, clear) con localStorage + try/catch
+- [x] 05-02: Página Historique: lista de tarjetas con marca/modelo/año/km/precio/fecha + botón eliminar por item
+- [x] 05-03: Botón "Effacer tout" con confirmación + estado vacío con ilustración y CTA
+- [x] 05-04: Página Comparer: dos selects con el historial, renderizar comparación al seleccionar ambos
+- [x] 05-05: Barras visuales CSS proporcionales, cálculo ratio precio/km, destacar ganador (borde verde, badge)
 
 ### Phase 6: Pulido y despliegue
 **Goal**: La app está pulida, probada en dispositivos reales y desplegada en GitHub Pages.
@@ -116,14 +116,13 @@ Plans:
   2. La app funciona sin errores en Chrome Android (360px) y Safari iOS (375px)
   3. La app instalada como PWA en Android funciona completamente offline
   4. La URL de GitHub Pages carga correctamente con SW registrado
-**Plans**: 5 plans
+**Plans**: 4 plans
 
 Plans:
-- [ ] 06-01: Auditoría visual en Chrome Android (360px, 390px) y Safari iOS (375px, 390px)
-- [ ] 06-02: Auditoría Lighthouse PWA: corregir warnings de manifest, SW e HTTPS
-- [ ] 06-03: Manejo de errores: localStorage bloqueado, historial corrompido, formulario sin datos (mensajes FR/AR)
-- [ ] 06-04: Optimización: verificar primera carga < 3s en 3G lento, minificar si HTML > 400KB
-- [ ] 06-05: Crear README.md, configurar repositorio y desplegar en GitHub Pages
+- [ ] 06-01-PLAN.md — Corrección tipográfica UI-SPEC: eliminar font-weight 700/800, eliminar --font-size-lg, añadir --font-size-hero
+- [ ] 06-02-PLAN.md — Manejo de errores: ErrorUI module, banner localStorage, inline historial corrompido, inline form sin resultado, cadenas i18n FR/AR
+- [ ] 06-03-PLAN.md — Corrección de paths para GitHub Pages subpath (manifest.json, sw.js), verificación tamaño < 400KB
+- [ ] 06-04-PLAN.md — README.md para usuarios finales + deploy en GitHub Pages (checkpoint humano)
 
 ## Progress
 
@@ -134,4 +133,4 @@ Plans:
 | 3. Motor de valoración y base de datos | 0/5 | Not started | - |
 | 4. Página Estimer | 0/5 | Not started | - |
 | 5. Historique y Comparer | 0/5 | Not started | - |
-| 6. Pulido y despliegue | 0/5 | Not started | - |
+| 6. Pulido y despliegue | 0/4 | Not started | - |
