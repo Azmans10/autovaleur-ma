@@ -6,7 +6,7 @@
   <meta name="description" content="Estimez la valeur de votre voiture d'occasion au Maroc — transparent, offline, gratuit.">
 
   <!-- PWA: color de la barra del navegador en Android Chrome -->
-  <meta name="theme-color" content="#1a73e8">
+  <meta name="theme-color" content="#006233">
 
   <!-- PWA iOS: activar modo standalone en Safari -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,10 +20,10 @@
   <link rel="manifest" href="manifest.json">
 
   <!-- Icono para iOS "Add to Home Screen" (el manifest no aplica en iOS Safari) -->
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="apple-touch-icon" href="icon.svg">
 
   <!-- Favicon -->
-  <link rel="icon" href="icon-192.png" type="image/png">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
 
   <style>
     /* ═══════════════════════════════════════════════════════════
@@ -58,6 +58,7 @@
       /* Radios */
       --radius:    12px;
       --radius-sm: 6px;
+      --radius-md: 12px;
       --radius-lg: 20px;
 
       /* Sombras */
@@ -1345,7 +1346,7 @@
         I18n.currentLang = lang;
         document.documentElement.lang = lang;
         document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
-        localStorage.setItem('lang', lang);
+        try { localStorage.setItem('lang', lang); } catch (e) { /* preferencia no crítica */ }
         I18n._applyTranslations();
         // Actualizar pill toggle si existe (Plan 03)
         document.querySelectorAll('.lang-option').forEach(function(opt) {
