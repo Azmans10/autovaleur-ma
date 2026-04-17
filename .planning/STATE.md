@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Executing Phase 06
-stopped_at: "Completed 06-01: Correccion tipografica y banner iOS"
-last_updated: "2026-04-17T21:08:21.409Z"
+stopped_at: "Completed 06-02: Error UI — banner localStorage + inline errors"
+last_updated: "2026-04-17T21:17:38.153Z"
 progress:
   total_phases: 6
   completed_phases: 5
   total_plans: 30
-  completed_plans: 28
-  percent: 93
+  completed_plans: 29
+  percent: 97
 ---
 
 # Project State — AutoValeur MA
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 **Phase:** 01 — Estructura base, SPA y PWA (Plan 02 of 05 complete)
 **Last action:** Plan 01-02 complete — hash router SPA implementado en index.html
 **Next step:** Execute plan 01-03
-**Stopped at:** Completed 06-01: Correccion tipografica y banner iOS
+**Stopped at:** Completed 06-02: Error UI — banner localStorage + inline errors
 
 ## Phases
 
@@ -52,6 +52,8 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 - [Phase 01]: deferredInstallPrompt capturado sin UI en Fase 1 — botón Android para fases futuras
 - [Phase 06-01]: Eliminar --font-size-lg completamente (7 usos) en lugar de mantenerlo como alias — evita confusion futura en CSS
 - [Phase 06-01]: Tap targets banner iOS: min-width/min-height 44px + display:flex en boton de cierre para cumplir PWA-04
+- [Phase 06]: ErrorUI module centraliza todos los errores visibles al usuario (reemplaza console.warn en History)
+- [Phase 06]: History._corrupted flag comunica deteccion de JSON invalido de getAll() a Historique.render() sin acoplamiento directo
 
 ## Performance Metrics
 
@@ -66,3 +68,4 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 | Phase 01-estructura-base-spa-y-pwa P01-03 | 12 | 3 tasks | 5 files |
 | Phase 01 P04 | 8min | 2 tasks | 1 files |
 | Phase 06 P01 | 18min | 3 tasks | 1 files |
+| Phase 06 P02 | 12min | 2 tasks | 1 files |
