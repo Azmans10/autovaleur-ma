@@ -2,7 +2,7 @@
 
 Estimez la valeur de votre voiture d'occasion au Maroc. Application web gratuite, 100% hors-ligne, sans inscription.
 
-**[Voir l'application](https://{GITHUB_USER}.github.io/autovaleur-ma/)**
+**[Voir l'application](https://Azmans10.github.io/autovaleur-ma/)**
 
 ## Captures d'écran
 
