@@ -68,9 +68,9 @@
       --font-base: system-ui, -apple-system, 'Segoe UI', sans-serif;
       --font-size-sm:   0.875rem; /* 14px */
       --font-size-base: 1rem;     /* 16px */
-      --font-size-lg:   1.125rem; /* 18px */
       --font-size-xl:   1.25rem;  /* 20px */
       --font-size-2xl:  1.5rem;   /* 24px */
+      --font-size-hero: 2.5rem;   /* 40px — precio principal resultado */
 
       /* Navegación inferior */
       --nav-height: 56px;
@@ -151,8 +151,8 @@
     }
 
     .app-title {
-      font-size: var(--font-size-lg);
-      font-weight: 700;
+      font-size: var(--font-size-base);
+      font-weight: 600;
       color: var(--primary);
       letter-spacing: -0.02em;
     }
@@ -218,7 +218,7 @@
     /* Títulos de página */
     .page h2 {
       font-size: var(--font-size-2xl);
-      font-weight: 700;
+      font-weight: 600;
       color: var(--text);
       margin-bottom: var(--sp-lg);
       letter-spacing: -0.02em;
@@ -418,7 +418,7 @@
     }
 
     .history-card__title {
-      font-size: var(--font-size-lg);
+      font-size: var(--font-size-base);
       font-weight: 600;
       color: var(--text);
       margin: 0;
@@ -445,7 +445,7 @@
       border: none;
       cursor: pointer;
       color: var(--text-muted);
-      font-size: var(--font-size-lg);
+      font-size: var(--font-size-base);
       padding: var(--sp-sm);
       line-height: 1;
       min-width: 44px;
@@ -645,8 +645,8 @@
     }
 
     .result-price {
-      font-size: 2.5rem;
-      font-weight: 800;
+      font-size: var(--font-size-hero);
+      font-weight: 600;
       color: var(--primary);
       letter-spacing: -0.02em;
       line-height: 1.1;
@@ -683,7 +683,7 @@
 
     .breakdown-table tr:last-child td {
       border-bottom: none;
-      font-weight: 700;
+      font-weight: 600;
     }
 
     .factor-up {
@@ -770,7 +770,7 @@
     }
 
     .compare-card__title {
-      font-size: var(--font-size-lg);
+      font-size: var(--font-size-base);
       font-weight: 600;
       color: var(--text);
       margin-block-end: var(--sp-xs);
@@ -972,7 +972,7 @@
     <section id="page-historique" class="page" hidden>
       <!-- Cabecera con título y botón Effacer tout -->
       <div class="page-header" style="display:flex; align-items:center; justify-content:space-between; margin-block-end: var(--sp-md);">
-        <h1 class="page-title" style="font-size: var(--font-size-lg); font-weight:600; margin:0;" data-i18n="nav.historique"></h1>
+        <h1 class="page-title" style="font-size: var(--font-size-base); font-weight:600; margin:0;" data-i18n="nav.historique"></h1>
         <button id="btn-clear-history" class="btn-outline-sm" data-i18n="historique.clear" hidden></button>
       </div>
 
@@ -995,7 +995,7 @@
     <!-- PÁGINA: Comparer -->
     <section id="page-comparer" class="page" hidden>
       <!-- Título de página -->
-      <h1 class="page-title" style="font-size: var(--font-size-lg); font-weight:600; margin-block-end: var(--sp-md);" data-i18n="nav.comparer"></h1>
+      <h1 class="page-title" style="font-size: var(--font-size-base); font-weight:600; margin-block-end: var(--sp-md);" data-i18n="nav.comparer"></h1>
 
       <!-- Estado vacío: visible cuando historial tiene < 2 entradas -->
       <div id="comparer-empty" class="empty-state" hidden>
@@ -1004,7 +1004,7 @@
           <rect x="36" y="12" width="20" height="40" rx="3" stroke="var(--text-muted)" stroke-width="2"/>
           <line x1="28" y1="32" x2="36" y2="32" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round"/>
         </svg>
-        <p data-i18n="comparer.empty" style="font-size: var(--font-size-lg); font-weight:600; margin-block: var(--sp-sm) 0;"></p>
+        <p data-i18n="comparer.empty" style="font-size: var(--font-size-base); font-weight:600; margin-block: var(--sp-sm) 0;"></p>
         <p data-i18n="comparer.empty_body" style="color: var(--text-muted); margin-block: var(--sp-sm) var(--sp-md);"></p>
         <button class="btn-primary" id="btn-comparer-cta" data-i18n="nav.estimer"></button>
       </div>
