@@ -368,6 +368,40 @@
       background: rgba(255, 255, 255, 0.3);
     }
 
+    /* ── ERROR UI ──────────────────────────────────────────── */
+    .error-banner {
+      background: var(--warning);
+      color: var(--text);
+      padding: var(--sp-sm) var(--sp-md);
+      display: flex;
+      align-items: flex-start;
+      gap: var(--sp-sm);
+      border-bottom: 1px solid var(--border);
+      font-size: var(--font-size-sm);
+    }
+    .error-banner-content {
+      flex: 1;
+    }
+    .error-banner-close {
+      background: none;
+      border: none;
+      font-size: var(--font-size-base);
+      cursor: pointer;
+      padding: var(--sp-xs);
+      min-width: 44px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text);
+      font-family: inherit;
+    }
+    .error-inline {
+      color: var(--danger);
+      font-size: var(--font-size-sm);
+      margin-block-start: var(--sp-sm);
+    }
+
     /* ── UTILIDADES ────────────────────────────────────────── */
 
     /* Corrección de scroll en Android: inputs no tapados por el teclado */
@@ -834,6 +868,15 @@
     </button>
   </header>
 
+  <div id="error-storage-banner" class="error-banner" role="alert" hidden>
+    <div class="error-banner-content">
+      <strong data-i18n="error.storage.title"></strong>
+      <p data-i18n="error.storage.body"></p>
+    </div>
+    <button class="error-banner-close" data-i18n-aria="error.storage.close"
+            onclick="ErrorUI.closeBanner()">×</button>
+  </div>
+
   <main>
 
     <!-- PÁGINA: Estimer (visible por defecto) -->
@@ -1177,7 +1220,13 @@
         // ── DATE ───────────────────────────────────────────────
         'date.today':                         "Aujourd'hui",
         'date.days_ago':                      'Il y a {n} jour(s)',
-        'date.weeks_ago':                     'Il y a {n} semaine(s)'
+        'date.weeks_ago':                     'Il y a {n} semaine(s)',
+        // ── ERRORES ────────────────────────────────────────────
+        'error.storage.title':   'Stockage non disponible',
+        'error.storage.body':    'Les estimations ne peuvent pas être sauvegardées. Vérifiez les paramètres de confidentialité de votre navigateur.',
+        'error.storage.close':   'Fermer',
+        'error.history.corrupt': 'Les données du journal ont été réinitialisées.',
+        'error.form.no_result':  'Impossible d\'estimer ce véhicule. Vérifiez les champs du formulaire.'
       },
       ar: {
         'nav.estimer':           '\u062a\u0642\u064a\u064a\u0645',
@@ -1259,7 +1308,13 @@
         // ── DATE ───────────────────────────────────────────────
         'date.today':                         '\u0627\u0644\u064a\u0648\u0645',
         'date.days_ago':                      '\u0645\u0646\u0630 {n} \u064a\u0648\u0645',
-        'date.weeks_ago':                     '\u0645\u0646\u0630 {n} \u0623\u0633\u0628\u0648\u0639'
+        'date.weeks_ago':                     '\u0645\u0646\u0630 {n} \u0623\u0633\u0628\u0648\u0639',
+        // ── ERRORES ────────────────────────────────────────────
+        'error.storage.title':   'التخزين غير متاح',
+        'error.storage.body':    'لا يمكن حفظ التقديرات. تحقق من إعدادات الخصوصية في متصفحك.',
+        'error.storage.close':   'إغلاق',
+        'error.history.corrupt': 'تمت إعادة تعيين بيانات السجل.',
+        'error.form.no_result':  'لا يمكن تقدير هذه السيارة. تحقق من حقول النموذج.'
       }
     };
 
