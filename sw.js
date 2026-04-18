@@ -9,7 +9,7 @@
 
 'use strict';
 
-const CACHE_NAME = 'autovaleur-v4';
+const CACHE_NAME = 'autovaleur-v5';
 
 // Lista de recursos a precachear en el install.
 const PRECACHE_URLS = [
@@ -17,7 +17,10 @@ const PRECACHE_URLS = [
   '/autovaleur-ma/index.html',
   '/autovaleur-ma/manifest.json',
   '/autovaleur-ma/sw.js',
-  '/autovaleur-ma/icon.svg'
+  '/autovaleur-ma/icon.svg',
+  '/autovaleur-ma/icon-192.png',
+  '/autovaleur-ma/icon-512.png',
+  '/autovaleur-ma/apple-touch-icon.png'
 ];
 
 // ── INSTALL ────────────────────────────────────────────────────

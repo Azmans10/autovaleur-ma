@@ -20,7 +20,7 @@
   <link rel="manifest" href="manifest.json">
 
   <!-- Icono para iOS "Add to Home Screen" (el manifest no aplica en iOS Safari) -->
-  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
   <!-- Favicon -->
   <link rel="icon" href="icon.svg" type="image/svg+xml">
@@ -2609,15 +2609,6 @@
       Historique.init();
       Comparer.init();
 
-      // Comprobar disponibilidad de localStorage una sola vez al inicio
-      (function checkStorage() {
-        try {
-          localStorage.setItem('__av_ok', '1');
-          localStorage.removeItem('__av_ok');
-        } catch (e) {
-          ErrorUI.showStorageBanner();
-        }
-      })();
 
       // ── SUBMIT HANDLER — Formulario Estimer ─────────────────────────
       document.getElementById('estimer-form').addEventListener('submit', function(e) {
