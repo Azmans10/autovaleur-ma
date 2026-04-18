@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
   <!-- Fondo verde marroquí con esquinas redondeadas -->
-  <rect width="192" height="192" rx="38" fill="#006233"/>
+  <rect width="192" height="192" rx="38" fill="#1a73e8"/>
   <!-- Letras AV en blanco, bold, centradas -->
   <text x="96" y="118" font-family="Arial Black,Arial,Helvetica,sans-serif" font-weight="900" font-size="88" text-anchor="middle" fill="#ffffff" letter-spacing="-2">AV</text>
   <!-- Acento dorado -->

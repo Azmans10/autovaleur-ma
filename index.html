@@ -6,7 +6,7 @@
   <meta name="description" content="Estimez la valeur de votre voiture d'occasion au Maroc — transparent, offline, gratuit.">
 
   <!-- PWA: color de la barra del navegador en Android Chrome -->
-  <meta name="theme-color" content="#006233">
+  <meta name="theme-color" content="#1a73e8">
 
   <!-- PWA iOS: activar modo standalone en Safari -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2608,6 +2608,16 @@
       EstimerForm.init();
       Historique.init();
       Comparer.init();
+
+      // Comprobar disponibilidad de localStorage una sola vez al inicio
+      (function checkStorage() {
+        try {
+          localStorage.setItem('__av_ok', '1');
+          localStorage.removeItem('__av_ok');
+        } catch (e) {
+          ErrorUI.showStorageBanner();
+        }
+      })();
 
       // ── SUBMIT HANDLER — Formulario Estimer ─────────────────────────
       document.getElementById('estimer-form').addEventListener('submit', function(e) {

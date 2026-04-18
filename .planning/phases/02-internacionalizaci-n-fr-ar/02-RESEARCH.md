@@ -412,7 +412,7 @@ document.querySelectorAll('.lang-option').forEach(function(opt) {
 | A3 | Inicializacion temprana de dir/lang via IIFE antes de DOMContentLoaded previene FOUC de layout | Code Examples | MEDIUM -- depende del timing del parser HTML; el flash puede seguir siendo visible pero sera de texto, no de layout |
 | A4 | Estructura del pill toggle con spans y clase .active | Architecture Patterns | LOW -- es un patron CSS estandar, cualquier implementacion equivalente funciona |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Orden exacto de inicializacion I18n vs Router**
    - What we know: Router.init() esta en DOMContentLoaded. I18n.init() debe estar ahi tambien.
