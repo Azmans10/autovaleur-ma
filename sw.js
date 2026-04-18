@@ -9,7 +9,7 @@
 
 'use strict';
 
-const CACHE_NAME = 'autovaleur-v5';
+const CACHE_NAME = 'autovaleur-v6';
 
 // Lista de recursos a precachear en el install.
 const PRECACHE_URLS = [
